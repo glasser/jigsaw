@@ -12,7 +12,7 @@
   <p>
     {{#if currentUser}}
       {{#if currentUserLoaded}}
-        {{currentUser.username}}
+        Logged in as {{currentUser.username}}. <button class="btn" id="logout">Logout</button>
       {{else}}
         Logging in...
       {{/if}}
@@ -23,10 +23,7 @@
 
   <div>
     <input id="new-username" placeholder="New username">
-    <button class="btn" id="new-user">New user</button>
-    {{#if currentUser}}
-      <button class="btn" id="logout">Logout</button>
-    {{/if}}
+    <button class="btn" id="new-user">Log in as new user</button>
   </div>
 
   <h3>Directory</h3>
