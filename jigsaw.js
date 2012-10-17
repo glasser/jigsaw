@@ -41,11 +41,16 @@ if (Meteor.isServer) {
     return Meteor.users.find();
   };
   Template.hello.events({
-    'click .directory li': function (e) {
+    'click .directory button': function () {
       Jigsaw.loginAsUser(this.username);
     },
-    'click #logout': function (e) {
+    'click #logout': function () {
       Meteor.logout();
+    },
+    'click #new-user': function (event, template) {
+      var username = template.find('#new-username').value;
+      if (username)
+        Jigsaw.loginAsUser(username);
     }
   });
 }

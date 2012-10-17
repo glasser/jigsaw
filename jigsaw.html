@@ -19,13 +19,20 @@
     {{else}}
       Not logged in.
     {{/if}}
-    <button class="btn" id="logout">Logout</button>
   </p>
 
+  <div>
+    <input id="new-username" placeholder="New username">
+    <button class="btn" id="new-user">New user</button>
+    {{#if currentUser}}
+      <button class="btn" id="logout">Logout</button>
+    {{/if}}
+  </div>
+
   <h3>Directory</h3>
-  <ul class="directory">
+  <div class="directory btn-group btn-group-vertical">
     {{#each users}}
-      <li>{{username}}</li>
+      <button class="btn">Log in as {{username}}</button>
     {{/each}}
   </ul>
 </template>
