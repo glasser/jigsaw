@@ -7,7 +7,25 @@
 </body>
 
 <template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Click" />
+  <h1>Jigsaw</h1>
+
+  <p>
+    {{#if currentUser}}
+      {{#if currentUserLoaded}}
+        {{currentUser.username}}
+      {{else}}
+        Logging in...
+      {{/if}}
+    {{else}}
+      Not logged in.
+    {{/if}}
+    <button class="btn" id="logout">Logout</button>
+  </p>
+
+  <h3>Directory</h3>
+  <ul class="directory">
+    {{#each users}}
+      <li>{{username}}</li>
+    {{/each}}
+  </ul>
 </template>
