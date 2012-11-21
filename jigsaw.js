@@ -36,11 +36,16 @@ if (Meteor.isServer) {
     if (username) {
       Jigsaw.loginAsUser(username, function (err) {
         // XXX deal with err
-        Session.set('userPanel.show-change-username', false);
+        reactivelyShow('userDirectory', false);
       });
     }
   };
 
+  Meteor.autorun(function () {
+    // If you ever become logged out, show the user directory.
+    if (!Meteor.userId())
+      reactivelyShow('userDirectory', true);
+  });
 
   Template.userPanel.users = function () {
     return Meteor.users.find({}, {sort: ['username']});
@@ -48,12 +53,9 @@ if (Meteor.isServer) {
   Template.userPanel.current = function () {
     return Meteor.user() && this.username === Meteor.user().username;
   };
-  Template.userPanel.showDirectory = function () {
-    return !Meteor.user() || Session.get('userPanel.show-change-username');
-  };
   Template.userPanel.events({
     'click #show-change-username': function () {
-      Session.set('userPanel.show-change-username', true);
+      reactivelyShow('userDirectory', true);
     },
     'keydown #username-other': function (event, template) {
       if (event.which === 13)

@@ -18,14 +18,14 @@
       You are:
       {{#if currentUser}}
         <span class='username'>{{currentUser.username}}</span>.
-        {{#unless showDirectory}}
+        {{#unless showing 'userDirectory'}}
           <button class='btn btn-mini' id='show-change-username'>change</button>
         {{/unless}}
       {{else}}
         nobody. Please log in:
       {{/if}}
     {{/if}}
-    {{#if showDirectory}}
+    {{#if showing 'userDirectory'}}
       <select id='directory'>
         {{#each users}}
           <option {{#if current}}selected{{/if}}>{{username}}</option>
