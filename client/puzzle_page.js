@@ -1,7 +1,31 @@
 Template.puzzlePage.puzzleId = function () {
-  return Session.get("route.puzzleId");
+  return JigsawRouter.currentPuzzleId();
 };
 
 Template.puzzlePage.puzzle = function () {
-  return Puzzles.findOne(Session.get("route.puzzleId"));
+  return Puzzles.findOne(JigsawRouter.currentPuzzleId());
 };
+
+Template.puzzlePage.events({
+  'click .removeTag': function (event, template) {
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (puzzleId) {
+      // XXX relies on insecure
+      Puzzles.update(puzzleId, {$pull: {tags: this}});
+    }
+  },
+  'keyup #addTag': function (event, template) {
+    if (event.which !== 13)
+      return;
+    var newTag = event.target.value;
+    if (!newTag)
+      return;
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (!puzzleId)
+      return;
+    // XXX relies on insecure
+    Puzzles.update(puzzleId, {$addToSet: {tags: newTag}});
+    event.target.value = '';
+  }
+});
+

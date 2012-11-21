@@ -7,6 +7,9 @@ var JigsawRouterClass = Backbone.Router.extend({
   },
   showPuzzle: function (puzzleId) {
     this.navigate("puzzle/" + puzzleId, true);
+  },
+  currentPuzzleId: function () {
+    return Session.get("route.puzzleId");
   }
 });
 
