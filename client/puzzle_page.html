@@ -10,12 +10,16 @@
            {{#each tags}}
              {{! XXX Link tag to tag search page }}
              <span class='tag'>{{ this }}</span>
-             <button class='btn'><i class='icon-remove'></i></button>
+             {{#if showing 'tag-editor'}}
+               <button class='btn'><i class='icon-remove'></i></button>
+             {{/if}}
            {{/each}}
-           <span class='input-append'>
-             <input type='text' id='addTag'>
-             <button class='btn'>add tag</button>
-           </span>
+           {{#show section='tag-editor' linkText='[edit tags]'}}
+             <span class='input-append'>
+               <input type='text' id='addTag'>
+               <button class='btn'>add tag</button>
+             </span>
+           {{/show}}
          </div>
          {{! XXX tag families }}
          {{! XXX metadata }}
