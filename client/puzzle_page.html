@@ -1,0 +1,29 @@
+<!-- XXX get in document title -->
+<!-- XXX put puzzle tags as CSS classes in body attrs -->
+
+<template name='puzzlePage'>
+  {{#if puzzleId}}
+    {{#with puzzle}}
+       <h3>Puzzle: {{title}}</h3>
+       <div id='tagsAndMeta'>
+         <div id='tagList'>
+           {{#each tags}}
+             {{! XXX Link tag to tag search page }}
+             <span class='tag'>{{ this }}</span>
+             <button class='btn'><i class='icon-remove'></i></button>
+           {{/each}}
+           <span class='input-append'>
+             <input type='text' id='addTag'>
+             <button class='btn'>add tag</button>
+           </span>
+         </div>
+         {{! XXX tag families }}
+         {{! XXX metadata }}
+       </div>
+       {{! XXX spreadsheets }}
+       {{! XXX related queries }}
+       {{! XXX comments }}
+       {{! XXX images }}
+    {{/with}}
+  {{/if}}
+</template>

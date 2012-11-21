@@ -3,33 +3,37 @@
 </head>
 
 <body>
-  {{> hello}}
-</body>
-
-<template name="hello">
   <h1>Jigsaw</h1>
 
-  <p>
-    {{#if currentUser}}
-      {{#if currentUserLoaded}}
-        Logged in as {{currentUser.username}}. <button class="btn" id="logout">Logout</button>
-      {{else}}
-        Logging in...
-      {{/if}}
-    {{else}}
-      Not logged in.
-    {{/if}}
-  </p>
+  {{> userPanel}}
 
+  {{> puzzlePage}}
+</body>
+
+<template name='userPanel'>
   <div>
-    <input id="new-username" placeholder="New username">
-    <button class="btn" id="new-user">Log in as new user</button>
+    {{#if loggingIn}}
+      Logging in...
+    {{else}}
+      You are:
+      {{#if currentUser}}
+        <span class='username'>{{currentUser.username}}</span>.
+        {{#unless showDirectory}}
+          <button class='btn btn-mini' id='show-change-username'>change</button>
+        {{/unless}}
+      {{else}}
+        nobody. Please log in:
+      {{/if}}
+    {{/if}}
+    {{#if showDirectory}}
+      <select id='directory'>
+        {{#each users}}
+          <option {{#if current}}selected{{/if}}>{{username}}</option>
+        {{/each}}
+      </select>
+      or other:
+      <input type='text' id='username-other' autocomplete='off'>
+      <button class='btn btn-primary' id='change-username'>set name</button>
+    {{/if}}
   </div>
-
-  <h3>Directory</h3>
-  <div class="directory btn-group btn-group-vertical">
-    {{#each users}}
-      <button class="btn">Log in as {{username}}</button>
-    {{/each}}
-  </ul>
 </template>
