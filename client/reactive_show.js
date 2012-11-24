@@ -5,6 +5,7 @@ Handlebars.registerHelper("show", function (options) {
   }
   return Template.reactiveShowLink({
     section: options.hash.section,
+    useEditButton: options.hash.useEditButton,
     linkText: options.hash.linkText || '[show]'});
 });
 
@@ -22,12 +23,12 @@ var reactivelyShowing = function (section) {
 };
 
 Template.reactiveShowLink.events({
-  'click a': function (event, template) {
+  'click .reactiveShow': function (event, template) {
     reactivelyShow(template.data.section, true);
   }
 });
 Template.reactiveHideLink.events({
-  'click a': function (event, template) {
+  'click .reactiveHide': function (event, template) {
     reactivelyShow(template.data.section, false);
   }
 });

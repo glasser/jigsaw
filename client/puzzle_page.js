@@ -27,10 +27,10 @@ Template.puzzlePage.events({
       Puzzles.update(puzzleId, {$pull: {tags: this}});
     }
   },
-  'keyup #addTag': function (event, template) {
-    if (event.which !== 13)
+  'keyup #addTag, click #addTagButton': function (event, template) {
+    if (event.type === 'keyup' && event.which !== 13)
       return;
-    var newTag = event.target.value;
+    var newTag = template.find('#addTag').value;
     if (!newTag)
       return;
     var puzzleId = JigsawRouter.currentPuzzleId();

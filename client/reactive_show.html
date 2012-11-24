@@ -1,7 +1,11 @@
 <template name="reactiveShowLink">
-  <a href='#'>{{linkText}}</a>
+  {{#if useEditButton}}
+    <button class='btn reactiveShow'><i class='icon-pencil'></i></button>
+  {{else}}
+    <a class='reactiveShow' href='#'>{{linkText}}</a>
+  {{/if}}
 </template>
 
 <template name="reactiveHideLink">
-  <a href='#'>[hide]</a>
+  <button class='btn reactiveHide'><i class='icon-ok'></i></button>
 </template>

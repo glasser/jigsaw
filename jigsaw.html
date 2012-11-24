@@ -26,14 +26,16 @@
       {{/if}}
     {{/if}}
     {{#if showing 'userDirectory'}}
-      <select id='directory'>
-        {{#each users}}
-          <option {{#if current}}selected{{/if}}>{{username}}</option>
-        {{/each}}
-      </select>
-      or other:
-      <input type='text' id='username-other' autocomplete='off'>
-      <button class='btn btn-primary' id='change-username'>set name</button>
+      <form class='form-inline'>
+        <select id='directory'>
+          {{#each users}}
+            <option {{#if current}}selected{{/if}}>{{username}}</option>
+          {{/each}}
+        </select>
+        or other:
+        <input type='text' id='username-other' autocomplete='off'>
+        <button class='btn btn-primary' id='change-username'>set name</button>
+      </form>
     {{/if}}
   </div>
 </template>

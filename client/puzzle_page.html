@@ -7,19 +7,22 @@
        <h3>Puzzle: {{title}}</h3>
        <div id='tagsAndMeta'>
          <div id='tagList'>
-           Tags:
-           {{#each sorted tags}}
-             {{! XXX Link tag to tag search page }}
-             <span class='tag'>{{ this }}</span>
-             {{#if showing 'tag-editor'}}
-               <button class='btn removeTag'><i class='icon-remove'></i></button>
-             {{/if}}
-           {{/each}}
-           {{#show section='tag-editor' linkText='[edit tags]'}}
-             <span class='input-append'>
-               <input type='text' id='addTag' placeholder='new tag'>
-             </span>
-           {{/show}}
+           <form class='form-inline'>
+             Tags:
+             {{#each sorted tags}}
+               {{! XXX Link tag to tag search page }}
+               <span class='tag'>{{ this }}</span>
+               {{#if showing 'tag-editor'}}
+                 <button class='btn removeTag'><i class='icon-remove'></i></button>
+               {{/if}}
+             {{/each}}
+             {{#show section='tag-editor' useEditButton=true}}
+               <span class='input-append'>
+                 <input type='text' id='addTag' placeholder='new tag'>
+                 <button class='btn' id='addTagButton'><i class='icon-plus'></i></button>
+               </span>
+             {{/show}}
+           </form>
          </div>
          {{! XXX tag families }}
          <div id='metadataList'>
