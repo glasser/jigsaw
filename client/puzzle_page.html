@@ -21,7 +21,13 @@
            {{/show}}
          </div>
          {{! XXX tag families }}
-         {{! XXX metadata }}
+         <div id='metadataList'>
+           <ul>
+             {{#each allMetadata}}
+               <li>{{name}}: <strong>{{metadataValue}}</strong></li>
+             {{/each}}
+           </ul>
+         </div>
        </div>
        {{! XXX spreadsheets }}
        {{! XXX related queries }}

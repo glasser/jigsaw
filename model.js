@@ -8,7 +8,7 @@ Puzzles = new Meteor.Collection('puzzles');
 //   families: object
 //       family -> family value (strings)
 //   metadata: object
-//       metadata name -> value
+//       metadata ID -> value
 //   relatedQueries: list of puzzle queries?
 
 if (Meteor.isServer) {
@@ -26,6 +26,16 @@ if (Meteor.isServer) {
 
 // puzzle queries need sorts (which was weird in AE), tags, negative tags,
 // metadata to show
+
+PuzzleMetadata = new Meteor.Collection('puzzleMetadata');
+// schema:
+//   name: string
+
+if (Meteor.isServer) {
+  Meteor.publish(null, function () {
+    return PuzzleMetadata.find();
+  });
+}
 
 
 // COMMENTS
