@@ -7,6 +7,7 @@
        <h3>Puzzle: {{title}}</h3>
        <div id='tagsAndMeta'>
          <div id='tagList'>
+           Tags:
            {{#each sorted tags}}
              {{! XXX Link tag to tag search page }}
              <span class='tag'>{{ this }}</span>
@@ -24,7 +25,13 @@
          <div id='metadataList'>
            <ul>
              {{#each allMetadata}}
-               <li>{{name}}: <strong>{{metadataValue}}</strong></li>
+               <li>{{name}}:
+                 {{#if url}}
+                   <a href='{{metadataValue}}' target='_blank'>{{metadataValue}}</a>
+                 {{else}}
+                   <strong>{{metadataValue}}</strong>
+                 {{/if}}
+               </li>
              {{/each}}
            </ul>
          </div>
