@@ -3,7 +3,11 @@ Handlebars.registerHelper("show", function (options) {
     return options.fn(this) + Template.reactiveHideLink({
       section: options.hash.section});
   }
-  return Template.reactiveShowLink({
+  var hidden = '';
+  if (options.inverse) {
+    hidden = options.inverse(this);
+  }
+  return hidden + Template.reactiveShowLink({
     section: options.hash.section,
     useEditButton: options.hash.useEditButton,
     linkText: options.hash.linkText || '[show]'});

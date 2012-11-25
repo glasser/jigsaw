@@ -7,7 +7,7 @@
        <h3>Puzzle: {{title}}</h3>
        <div id='tagsAndMeta'>
          <div id='tagList'>
-           <form class='form-inline'>
+           <div class='form-inline'>
              Tags:
              {{#each sorted tags}}
                {{! XXX Link tag to tag search page }}
@@ -22,18 +22,25 @@
                  <button class='btn' id='addTagButton'><i class='icon-plus'></i></button>
                </span>
              {{/show}}
-           </form>
+           </div>
          </div>
          {{! XXX tag families }}
          <div id='metadataList'>
            <ul>
              {{#each allMetadata}}
-               <li>{{name}}:
-                 {{#if url}}
-                   <a href='{{metadataValue}}' target='_blank'>{{metadataValue}}</a>
-                 {{else}}
-                   <strong>{{metadataValue}}</strong>
-                 {{/if}}
+               <li>
+                 <div class='form-inline'>
+                   {{name}}:
+                   {{#show section=_id useEditButton=true}}
+                     <input type='text' class='setMetadata' value='{{metadataValue}}'>
+                   {{else}}
+                     {{#if url}}
+                       <a href='{{metadataValue}}' target='_blank'>{{metadataValue}}</a>
+                     {{else}}
+                       <strong>{{metadataValue}}</strong>
+                     {{/if}}
+                   {{/show}}
+                 </div>
                </li>
              {{/each}}
            </ul>
