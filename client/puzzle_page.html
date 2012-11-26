@@ -4,7 +4,14 @@
 <template name='puzzlePage'>
   {{#if puzzleId}}
     {{#with puzzle}}
-       <h3>Puzzle: {{title}}</h3>
+       <h3 class='form-inline'>
+         Puzzle:
+         {{#show section='titleEditor' useEditButton=true}}
+           <input type='text' id='setTitle' class='focus-titleEditor' value='{{title}}'>
+         {{else}}
+           {{title}}
+         {{/show}}
+       </h3>
        <div id='tagsAndMeta'>
          <div id='tagList'>
            <div class='form-inline'>
@@ -12,11 +19,11 @@
              {{#each sorted tags}}
                {{! XXX Link tag to tag search page }}
                <span class='tag'>{{ this }}</span>
-               {{#if showing 'tag-editor'}}
+               {{#if showing 'tagEditor'}}
                  <button class='btn removeTag'><i class='icon-remove'></i></button>
                {{/if}}
              {{/each}}
-             {{#show section='tag-editor' useEditButton=true}}
+             {{#show section='tagEditor' useEditButton=true hideIcon='ok'}}
                <span class='input-append'>
                  <input type='text' id='addTag' placeholder='new tag'>
                  <button class='btn' id='addTagButton'><i class='icon-plus'></i></button>
@@ -32,7 +39,7 @@
                  <div class='form-inline'>
                    {{name}}:
                    {{#show section=_id useEditButton=true}}
-                     <input type='text' class='setMetadata' value='{{metadataValue}}'>
+                     <input type='text' class='setMetadata focus-{{_id}}' value='{{metadataValue}}'>
                    {{else}}
                      {{#if url}}
                        <a href='{{metadataValue}}' target='_blank'>{{metadataValue}}</a>

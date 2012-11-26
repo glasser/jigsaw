@@ -1,7 +1,9 @@
 Handlebars.registerHelper("show", function (options) {
   if (reactivelyShowing(options.hash.section)) {
     return options.fn(this) + Template.reactiveHideLink({
-      section: options.hash.section});
+      section: options.hash.section,
+      hideIcon: options.hash.hideIcon || 'ban-circle'
+    });
   }
   var hidden = '';
   if (options.inverse) {
@@ -18,12 +20,24 @@ Handlebars.registerHelper("showing", function (section) {
   return reactivelyShowing(section);
 });
 
+var lastShown = null;
+
 var reactivelyShow = function (section, show) {
   Session.set('reactiveShow.' + section, !!show);
+  lastShown = section;
 };
 
 var reactivelyShowing = function (section) {
   return !! Session.get('reactiveShow.' + section);
+};
+
+var reactiveShowRendered = function (template) {
+  if (!lastShown)
+    return;
+  var focusElement = template.find('.focus-' + lastShown);
+  if (focusElement)
+    focusElement.focus();
+  lastShown = null;
 };
 
 Template.reactiveShowLink.events({
