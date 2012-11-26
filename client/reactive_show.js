@@ -24,7 +24,8 @@ var lastShown = null;
 
 var reactivelyShow = function (section, show) {
   Session.set('reactiveShow.' + section, !!show);
-  lastShown = section;
+  if (show)
+    lastShown = section;
 };
 
 var reactivelyShowing = function (section) {
