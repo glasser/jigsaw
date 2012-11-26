@@ -7,5 +7,11 @@ Meteor.methods({
   },
   setTitle: function (puzzleId, newTitle) {
     Puzzles.update(puzzleId, {$set: {title: newTitle}});
+  },
+  setMetadata: function (puzzleId, metadataId, value) {
+    var key = "metadata." + metadataId;
+    var set = {};
+    set[key] = value;
+    Puzzles.update(puzzleId, {$set: set});
   }
 });

@@ -45,6 +45,7 @@ var enterKeyUp = function (f) {
 };
 
 Template.puzzlePage.events({
+  // TAGS
   'click .removeTag': function (event, template) {
     var puzzleId = JigsawRouter.currentPuzzleId();
     if (puzzleId)
@@ -52,15 +53,23 @@ Template.puzzlePage.events({
   },
   'keyup #addTag, click #addTagButton': enterKeyUp(
     function (event, template) {
-      var newTag = template.find('#addTag').value;
+      var addTagInput = template.find('#addTag');
+      if (!addTagInput)
+        return;
+      var newTag = addTagInput.value;
       if (!newTag)
         return;
       var puzzleId = JigsawRouter.currentPuzzleId();
       if (!puzzleId)
         return;
       Meteor.call('addTag', puzzleId, newTag);
-      event.target.value = '';
+      addTagInput.value = '';
     }),
+  'keydown #addTag': escapeKeyDown(function (event, template) {
+    reactivelyShow('tagEditor', false);
+  }),
+
+  // TITLE
   'keyup #setTitle': enterKeyUp(function (event, template) {
     var newTitle = template.find('#setTitle').value;
     if (!newTitle)
@@ -73,6 +82,18 @@ Template.puzzlePage.events({
   }),
   'keydown #setTitle': escapeKeyDown(function () {
     reactivelyShow('titleEditor', false);
+  }),
+
+  // METADATA
+  'keydown .setMetadata': escapeKeyDown(function () {
+    reactivelyShow(this._id, false);
+  }),
+  'keyup .setMetadata': enterKeyUp(function (event, template) {
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (!puzzleId)
+      return;
+    Meteor.call('setMetadata', puzzleId, this._id, event.target.value);
+    reactivelyShow(this._id, false);
   })
 });
 
