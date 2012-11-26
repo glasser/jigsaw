@@ -41,7 +41,8 @@
                  <div class='form-inline'>
                    {{name}}:
                    {{#show section=_id useEditButton=true}}
-                     <input type='text' class='setMetadata focus-{{_id}}' value='{{metadataValue}}'>
+                     <input type='text' id='metadata-{{_id}}'
+                            class='setMetadata focus-{{_id}}' value='{{metadataValue}}'>
                    {{else}}
                      {{#if url}}
                        <a href='{{metadataValue}}' target='_blank'>{{metadataValue}}</a>
