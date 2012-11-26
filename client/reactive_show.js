@@ -20,25 +20,18 @@ Handlebars.registerHelper("showing", function (section) {
   return reactivelyShowing(section);
 });
 
-var lastShown = null;
-
 var reactivelyShow = function (section, show) {
   Session.set('reactiveShow.' + section, !!show);
-  if (show)
-    lastShown = section;
+  if (show) {
+    Meteor.flush();
+    var focusElement = DomUtils.find(document, '.focus-' + section);
+    if (focusElement)
+      focusElement.focus();
+  }
 };
 
 var reactivelyShowing = function (section) {
   return !! Session.get('reactiveShow.' + section);
-};
-
-var reactiveShowRendered = function (template) {
-  if (!lastShown)
-    return;
-  var focusElement = template.find('.focus-' + lastShown);
-  if (focusElement)
-    focusElement.focus();
-  lastShown = null;
 };
 
 Template.reactiveShowLink.events({
