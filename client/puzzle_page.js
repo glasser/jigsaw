@@ -22,10 +22,8 @@ Template.puzzlePage.metadataValue = function () {
 Template.puzzlePage.events({
   'click .removeTag': function (event, template) {
     var puzzleId = JigsawRouter.currentPuzzleId();
-    if (puzzleId) {
-      // XXX relies on insecure
-      Puzzles.update(puzzleId, {$pull: {tags: this}});
-    }
+    if (puzzleId)
+      Meteor.call('removeTag', puzzleId, this);
   },
   'keyup #addTag, click #addTagButton': function (event, template) {
     if (event.type === 'keyup' && event.which !== 13)
@@ -36,8 +34,7 @@ Template.puzzlePage.events({
     var puzzleId = JigsawRouter.currentPuzzleId();
     if (!puzzleId)
       return;
-    // XXX relies on insecure
-    Puzzles.update(puzzleId, {$addToSet: {tags: newTag}});
+    Meteor.call('addTag', puzzleId, newTag);
     event.target.value = '';
   }
 });
