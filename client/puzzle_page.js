@@ -1,4 +1,4 @@
-// XXX should be a better place to put this
+// XXX should be a better place to put this. eg, a body rendered callback.
 Template.puzzlePage.rendered = function () {
   reactiveShowRendered(this);
 };
