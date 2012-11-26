@@ -14,22 +14,24 @@
        </h3>
        <div id='tagsAndMeta'>
          <div id='tagList'>
-           <div class='form-inline'>
-             Tags:
-             {{#each sorted tags}}
-               {{! XXX Link tag to tag search page }}
-               <span class='tag'>{{ this }}</span>
-               {{#if showing 'tagEditor'}}
-                 <button class='btn removeTag'><i class='icon-remove'></i></button>
-               {{/if}}
-             {{/each}}
-             {{#show section='tagEditor' useEditButton=true hideIcon='ok'}}
-               <span class='input-append'>
-                 <input type='text' id='addTag' placeholder='new tag'>
-                 <button class='btn' id='addTagButton'><i class='icon-plus'></i></button>
-               </span>
-             {{/show}}
-           </div>
+           {{#isolate}}
+             <div class='form-inline'>
+               Tags:
+               {{#each sorted tags}}
+                 {{! XXX Link tag to tag search page }}
+                 <span class='tag'>{{ this }}</span>
+                 {{#if showing 'tagEditor'}}
+                   <button class='btn removeTag'><i class='icon-remove'></i></button>
+                 {{/if}}
+               {{/each}}
+               {{#show section='tagEditor' useEditButton=true hideIcon='ok'}}
+                 <span class='input-append'>
+                   <input type='text' id='addTag' class='focus-tagEditor' placeholder='new tag'>
+                   <button class='btn' id='addTagButton'><i class='icon-plus'></i></button>
+                 </span>
+               {{/show}}
+             </div>
+           {{/isolate}}
          </div>
          {{! XXX tag families }}
          <div id='metadataList'>
