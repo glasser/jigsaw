@@ -15,6 +15,12 @@ if (Meteor.isServer) {
   Meteor.publish('puzzle', function (puzzleId) {
     return Puzzles.find({_id: puzzleId});
   });
+
+  // XXX add add/remove puzzle methods instead
+  Puzzles.allow({
+    insert: function () { return true; },
+    remove: function () { return true; }
+  });
 } else {
   Meteor.autosubscribe(function () {
     var puzzleId = Session.get('route.puzzleId');
@@ -34,6 +40,13 @@ PuzzleMetadata = new Meteor.Collection('puzzleMetadata');
 if (Meteor.isServer) {
   Meteor.publish(null, function () {
     return PuzzleMetadata.find();
+  });
+
+  // XXX add methods for tweaking PuzzleMetadata instead
+  PuzzleMetadata.allow({
+    insert: function () { return true; },
+    remove: function () { return true; },
+    update: function () { return true; }
   });
 }
 
