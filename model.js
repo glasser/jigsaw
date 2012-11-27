@@ -59,6 +59,32 @@ if (Meteor.isServer) {
   }
 }
 
+// FAMILIES of tags for puzzles (ie, popups)
+Families = new Meteor.Collection('families');
+// schema:
+//    name: string
+//    values: array of string
+
+if (Meteor.isServer) {
+  Meteor.publish(null, function () {
+    return Families.find();
+  });
+
+  // XXX add admin methods for Families instead
+  Families.allow({
+    insert: function () { return true; },
+    remove: function () { return true; },
+    update: function () { return true; }
+  });
+
+  // Initial data!
+  if (Families.find().count() === 0) {
+    Families.insert({
+      name: "Status",
+      values: ["New", "Solved", "Needs Insight", "Needs Research"]
+    });
+  }
+}
 
 // COMMENTS
 
