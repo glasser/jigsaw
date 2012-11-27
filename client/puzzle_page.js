@@ -19,8 +19,13 @@ Template.familiesList.familyValue = function () {
   return Meteor._get(puzzle, 'families', this._id);
 };
 
-Template.familiesList.maybeSelected = function () {
-  // XXX RIGHT HERE NOW
+Template.familiesList.maybeSelected = function (familyId) {
+  //  XXX _get top level
+  var puzzle = Template.puzzlePage.puzzle();
+  if (!puzzle)
+    return '';
+  return (Meteor._get(puzzle, 'families', familyId) === this.toString()
+          ? 'selected' : '');
 };
 
 Template.metadataList.allMetadata = function () {
@@ -123,3 +128,13 @@ Template.puzzlePage.events(okCancelEvents(
       reactivelyShow(this._id, false);
     }}));
 
+// FAMILIES
+Template.puzzlePage.events({
+  'change .setFamily': function (event, template) {
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (!puzzleId)
+      return;
+    Meteor.call('setFamily', puzzleId, this._id, event.target.value);
+    reactivelyShow(this._id, false);
+  }
+});

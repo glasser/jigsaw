@@ -60,10 +60,9 @@
           <div class='form-inline'>
             {{name}}:
             {{#show section=_id useEditButton=true}}
-              {{! XXX focus-id }}
-              <select id='family-{{_id}}' class='setFamily'>
+              <select id='family-{{_id}}' class='setFamily focus-{{_id}}'>
                 {{#each values}}
-                  <option {{maybeSelected}}>{{this}}</option>
+                  <option {{maybeSelected ../_id}}>{{this}}</option>
                 {{/each}}
               </select>
             {{else}}
