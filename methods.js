@@ -13,5 +13,11 @@ Meteor.methods({
     var set = {};
     set[key] = value;
     Puzzles.update(puzzleId, {$set: set});
+  },
+  setFamily: function (puzzleId, familyId, value) {
+    var key = "families." + familyId;
+    var set = {};
+    set[key] = value;
+    Puzzles.update(puzzleId, {$set: set});
   }
 });

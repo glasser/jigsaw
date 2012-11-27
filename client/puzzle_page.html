@@ -7,6 +7,7 @@
        {{> puzzleTitle}}
        <div id='tagsAndMeta'>
          {{> tagList}}
+         {{> familiesList }}
          {{> metadataList}}
        </div>
        {{! XXX spreadsheets }}
@@ -48,6 +49,26 @@
         </span>
       {{/show}}
     </div>
+  </div>
+</template>
+
+<template name='familiesList'>
+  <div id='familiesList'>
+    <ul>
+      {{#each allFamilies}}
+        <li>
+          <div class='form-inline'>
+            {{name}}:
+            {{#show section=_id useEditButton=true}}
+              XXX editor
+            {{else}}
+              {{! XXX link to search page }}
+              <strong>{{familyValue}}</strong>
+            {{/show}}
+          </div>
+        </li>
+      {{/each}}
+    </ul>
   </div>
 </template>
 

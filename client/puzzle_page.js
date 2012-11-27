@@ -6,6 +6,19 @@ Template.puzzlePage.puzzle = function () {
   return Puzzles.findOne(JigsawRouter.currentPuzzleId());
 };
 
+Template.familiesList.allFamilies = function () {
+  // XXX sort?
+  return Families.find();
+};
+
+Template.familiesList.familyValue = function () {
+  //  XXX _get top level
+  var puzzle = Template.puzzlePage.puzzle();
+  if (!puzzle)
+    return '';
+  return Meteor._get(puzzle, 'families', this._id);
+};
+
 Template.metadataList.allMetadata = function () {
   // XXX sort?
   return PuzzleMetadata.find();
