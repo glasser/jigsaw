@@ -6,7 +6,7 @@ Puzzles = new Meteor.Collection('puzzles');
 //   title: string
 //   tags: list of tags (which in HQ neded to be identifier-style)
 //   families: object
-//       family -> family value (strings)
+//       family ID -> family value (strings)
 //   metadata: object
 //       metadata ID -> value
 //   relatedQueries: list of puzzle queries?
@@ -33,21 +33,30 @@ if (Meteor.isServer) {
 // puzzle queries need sorts (which was weird in AE), tags, negative tags,
 // metadata to show
 
+// METADATA for puzzles
 PuzzleMetadata = new Meteor.Collection('puzzleMetadata');
 // schema:
 //   name: string
+//   url: bool
 
 if (Meteor.isServer) {
   Meteor.publish(null, function () {
     return PuzzleMetadata.find();
   });
 
-  // XXX add methods for tweaking PuzzleMetadata instead
+  // XXX add admin methods for PuzzleMetadata instead
   PuzzleMetadata.allow({
     insert: function () { return true; },
     remove: function () { return true; },
     update: function () { return true; }
   });
+
+  // Initial data!
+  if (PuzzleMetadata.find().count() === 0) {
+    PuzzleMetadata.insert({name: "Puzzle URL", url: true});
+    PuzzleMetadata.insert({name: "Answer"});
+    PuzzleMetadata.insert({name: "Wrong answers"});
+  }
 }
 
 
