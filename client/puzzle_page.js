@@ -22,23 +22,39 @@ Template.puzzlePage.metadataValue = function () {
 var ESCAPE = 27;
 var ENTER = 13;
 
-// This runs the given f if the type is *NOT* type, or if the which *IS*
-// which.
-var filterEvent = function (type, which, f) {
-  return function (event, template) {
-    if (event.type !== type || event.which === which)
-      f.call(this, event, template);
-  };
+var okCancelEvents = function (selector, callbacks) {
+  var ok = callbacks.ok || function () {};
+  var cancel = callbacks.cancel || function () {};
+
+  var events = {};
+  events['keyup '+selector+', keydown '+selector] =
+    function (evt, template) {
+      if (evt.type === "keydown" && evt.which === ESCAPE) {
+        // escape = cancel
+        cancel.call(this, evt, template);
+      } else if (evt.type === "keydown" && evt.which === ENTER) {
+        // blur/return/enter = ok/submit if non-empty
+        var value = String(evt.target.value || "");
+        ok.call(this, value, evt, template);
+        // On IE10, without this, hitting enter will also click on some random
+        // button.
+        evt.preventDefault();
+      }
+    };
+  return events;
 };
 
-var escapeKeyDown = function (f) {
-  return filterEvent('keydown', ESCAPE, f);
-};
 
-var enterKeyUp = function (f) {
-  return filterEvent('keyup', ENTER, f);
+// TAGS
+var addTag = function (newTag, event, template) {
+  if (!newTag)
+    return;
+  var puzzleId = JigsawRouter.currentPuzzleId();
+  if (!puzzleId)
+    return;
+  Meteor.call('addTag', puzzleId, newTag);
+  template.find('#addTag').value = '';
 };
-
 Template.puzzlePage.events({
   // TAGS
   'click .removeTag': function (event, template) {
@@ -46,49 +62,47 @@ Template.puzzlePage.events({
     if (puzzleId)
       Meteor.call('removeTag', puzzleId, this);
   },
-  'keyup #addTag, click #addTagButton': enterKeyUp(
-    function (event, template) {
-      var addTagInput = template.find('#addTag');
-      if (!addTagInput)
-        return;
-      var newTag = addTagInput.value;
-      if (!newTag)
+  'click #addTagButton': function (event, template) {
+    var addTagInput = template.find('#addTag');
+    if (!addTagInput)
+      return;
+    addTag(addTagInput.value || "", event, template);
+  }
+});
+Template.puzzlePage.events(okCancelEvents(
+  '#addTag', {
+    ok: addTag,
+    cancel: function () {
+      reactivelyShow('tagEditor', false);
+    }}));
+
+// TITLE
+Template.puzzlePage.events(okCancelEvents(
+  '#setTitle', {
+    ok: function (newTitle, event, template) {
+      if (!newTitle)
         return;
       var puzzleId = JigsawRouter.currentPuzzleId();
       if (!puzzleId)
         return;
-      Meteor.call('addTag', puzzleId, newTag);
-      addTagInput.value = '';
-    }),
-  'keydown #addTag': escapeKeyDown(function (event, template) {
-    reactivelyShow('tagEditor', false);
-  }),
+      Meteor.call('setTitle', puzzleId, newTitle);
+      reactivelyShow('titleEditor', false);
+    },
+    cancel: function () {
+      reactivelyShow('titleEditor', false);
+    }}));
 
-  // TITLE
-  'keyup #setTitle': enterKeyUp(function (event, template) {
-    var newTitle = template.find('#setTitle').value;
-    if (!newTitle)
-      return;
-    var puzzleId = JigsawRouter.currentPuzzleId();
-    if (!puzzleId)
-      return;
-    Meteor.call('setTitle', puzzleId, newTitle);
-    reactivelyShow('titleEditor', false);
-  }),
-  'keydown #setTitle': escapeKeyDown(function () {
-    reactivelyShow('titleEditor', false);
-  }),
-
-  // METADATA
-  'keydown .setMetadata': escapeKeyDown(function () {
-    reactivelyShow(this._id, false);
-  }),
-  'keyup .setMetadata': enterKeyUp(function (event, template) {
-    var puzzleId = JigsawRouter.currentPuzzleId();
-    if (!puzzleId)
-      return;
-    Meteor.call('setMetadata', puzzleId, this._id, event.target.value);
-    reactivelyShow(this._id, false);
-  })
-});
+// METADATA
+Template.puzzlePage.events(okCancelEvents(
+  '.setMetadata', {
+    ok: function (value) {
+      var puzzleId = JigsawRouter.currentPuzzleId();
+      if (!puzzleId)
+        return;
+      Meteor.call('setMetadata', puzzleId, this._id, value);
+      reactivelyShow(this._id, false);
+    },
+    cancel: function () {
+      reactivelyShow(this._id, false);
+    }}));
 
