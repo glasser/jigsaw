@@ -6,12 +6,12 @@ Template.puzzlePage.puzzle = function () {
   return Puzzles.findOne(JigsawRouter.currentPuzzleId());
 };
 
-Template.puzzlePage.allMetadata = function () {
+Template.metadataList.allMetadata = function () {
   // XXX sort?
   return PuzzleMetadata.find();
 };
 
-Template.puzzlePage.metadataValue = function () {
+Template.metadataList.metadataValue = function () {
   //  XXX _get top level
   var puzzle = Template.puzzlePage.puzzle();
   if (!puzzle)
