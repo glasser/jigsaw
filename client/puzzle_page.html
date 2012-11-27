@@ -2,7 +2,7 @@
 <!-- XXX put puzzle tags as CSS classes in body attrs -->
 
 <template name='puzzlePage'>
-  {{#if puzzleId}}
+  {{#if puzzle}}
     {{#with puzzle}}
        <h3 class='form-inline'>
          Puzzle:
@@ -61,5 +61,7 @@
        {{! XXX comments }}
        {{! XXX images }}
     {{/with}}
+  {{else}}
+    <h3>No such puzzle</h3>
   {{/if}}
 </template>
