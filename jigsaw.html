@@ -26,7 +26,7 @@
       {{/if}}
     {{/if}}
     {{#if showing 'userDirectory'}}
-      <form class='form-inline'>
+      <div class='form-inline'>
         <select id='directory'>
           {{#each users}}
             <option {{#if current}}selected{{/if}}>{{username}}</option>
@@ -35,7 +35,7 @@
         or other:
         <input type='text' id='username-other' autocomplete='off'>
         <button class='btn btn-primary' id='change-username'>set name</button>
-      </form>
+      </div>
     {{/if}}
   </div>
 </template>
