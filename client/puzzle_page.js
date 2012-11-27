@@ -19,6 +19,10 @@ Template.familiesList.familyValue = function () {
   return Meteor._get(puzzle, 'families', this._id);
 };
 
+Template.familiesList.maybeSelected = function () {
+  // XXX RIGHT HERE NOW
+};
+
 Template.metadataList.allMetadata = function () {
   // XXX sort?
   return PuzzleMetadata.find();

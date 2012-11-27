@@ -60,7 +60,12 @@
           <div class='form-inline'>
             {{name}}:
             {{#show section=_id useEditButton=true}}
-              XXX editor
+              {{! XXX focus-id }}
+              <select id='family-{{_id}}' class='setFamily'>
+                {{#each values}}
+                  <option {{maybeSelected}}>{{this}}</option>
+                {{/each}}
+              </select>
             {{else}}
               {{! XXX link to search page }}
               <strong>{{familyValue}}</strong>
