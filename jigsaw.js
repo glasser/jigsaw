@@ -5,10 +5,8 @@ if (Meteor.isServer) {
     return Meteor.users.find({}, {username: 1});
   });
 
-  Accounts.registerLoginHandler(function (options) {
-    if (!options.justUsername)
-      return undefined;  // don't handle
-    var user = Meteor.users.findOne({username: options.justUsername});
+  var logInAsUsername = function (username) {
+    var user = Meteor.users.findOne({username: username});
     if (user) {
       var stampedLoginToken = Accounts._generateStampedLoginToken();
       Meteor.users.update(
@@ -16,25 +14,57 @@ if (Meteor.isServer) {
 
       return {token: stampedLoginToken.token, id: user._id};
     } else {
-      user = {username: options.justUsername};
+      user = {username: username};
       return Accounts.insertUserDoc({generateLoginToken: true}, user);
     }
+  };
+
+  Accounts.registerLoginHandler(function (options) {
+    if (!options.changeUsername)
+      return undefined;  // don't handle
+
+    // This can only be used to CHANGE user, not log in initially.
+    if (!Meteor.userId())
+      throw new Meteor.Error('Not already logged in!');
+
+    return logInAsUsername(options.changeUsername);
+  });
+
+  Accounts.registerLoginHandler(function (options) {
+    if (!options.globalPassword)
+      return undefined;
+
+    // This is just used for initial login, not changing username.
+    if (Meteor.userId())
+      throw new Meteor.Error('Already logged in!');
+
+    // XXX store password somewhere
+    if (options.globalPassword !== 'secret')
+      throw new Meteor.Error('Wrong password!');
+    return logInAsUsername('nobody');
   });
 } else {
   Meteor.subscribe("directory");
 
-  Jigsaw.loginAsUser = function (username, callback) {
+  Jigsaw.changeUsername = function (username, callback) {
     Accounts.callLoginMethod({
-      methodArguments: [{justUsername: username}],
+      methodArguments: [{changeUsername: username}],
       userCallback: callback
     });
   };
 
-  var login = function (template) {
+  Jigsaw.logInWithGlobalPassword = function (password, callback) {
+    Accounts.callLoginMethod({
+      methodArguments: [{globalPassword: password}],
+      userCallback: callback
+    });
+  };
+
+  var changeUsername = function (template) {
     var username = template.find('#username-other').value ||
           DomUtils.getElementValue(template.find('#directory'));
     if (username) {
-      Jigsaw.loginAsUser(username, function (err) {
+      Jigsaw.changeUsername(username, function (err) {
         // XXX deal with err
         reactivelyShow('userDirectory', false);
       });
@@ -42,8 +72,8 @@ if (Meteor.isServer) {
   };
 
   Meteor.autorun(function () {
-    // If you ever become logged out, show the user directory.
-    if (!Meteor.userId())
+    // If logged in as nobody, always show the directory.
+    if (Meteor.user() && Meteor.user().username === 'nobody')
       reactivelyShow('userDirectory', true);
   });
 
@@ -53,16 +83,26 @@ if (Meteor.isServer) {
   Template.userPanel.current = function () {
     return Meteor.user() && this.username === Meteor.user().username;
   };
+  Template.userPanel.isNobody = function () {
+    return Meteor.user().username === 'nobody';
+  };
   Template.userPanel.events({
     'click #show-change-username': function () {
       reactivelyShow('userDirectory', true);
     },
     'keydown #username-other': function (event, template) {
       if (event.which === 13)
-        login(template);
+        changeUsername(template);
     },
     'click #change-username': function (event, template) {
-      login(template);
+      changeUsername(template);
+    }
+  });
+
+  Template.passwordForm.events({
+    'keydown #globalPassword': function (event, template) {
+      if (event.which === 13)
+        Jigsaw.logInWithGlobalPassword(event.target.value);
     }
   });
 }

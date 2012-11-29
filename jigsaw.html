@@ -3,28 +3,32 @@
 </head>
 
 <body>
-  <h1>Jigsaw</h1>
+  {{#if loggingIn}}
+    Logging in.
+  {{else}}
+    {{#if currentUser}}
+      <h1>Jigsaw</h1>
 
-  {{> userPanel}}
+      {{> userPanel}}
 
-  {{> puzzlePage}}
+      {{> puzzlePage}}
+    {{else}}
+      {{> passwordForm }}
+    {{/if}}
+  {{/if}}
 </body>
 
 <template name='userPanel'>
   <div>
-    {{#if loggingIn}}
-      Logging in...
-    {{else}}
       You are:
-      {{#if currentUser}}
+      {{#if isNobody}}
+        nobody. Please log in:
+      {{else}}
         <span class='username'>{{currentUser.username}}</span>.
         {{#unless showing 'userDirectory'}}
           <button class='btn btn-mini' id='show-change-username'>change</button>
         {{/unless}}
-      {{else}}
-        nobody. Please log in:
       {{/if}}
-    {{/if}}
     {{#if showing 'userDirectory'}}
       <div class='form-inline'>
         <select id='directory'>
@@ -38,4 +42,9 @@
       </div>
     {{/if}}
   </div>
+</template>
+
+<template name='passwordForm'>
+  <p>What is the password?</p>
+  <input type='password' id='globalPassword'>
 </template>
