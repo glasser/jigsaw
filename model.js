@@ -31,7 +31,8 @@ if (Meteor.isServer) {
 
 
 // puzzle queries need sorts (which was weird in AE), tags, negative tags,
-// metadata to show
+// metadata to show. families were like tags. also, by default we filter out
+// 'deleted'
 
 // METADATA for puzzles
 PuzzleMetadata = new Meteor.Collection('puzzleMetadata');
