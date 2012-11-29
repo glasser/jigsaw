@@ -134,7 +134,9 @@ Template.puzzlePage.events({
     var puzzleId = JigsawRouter.currentPuzzleId();
     if (!puzzleId)
       return;
-    Meteor.call('setFamily', puzzleId, this._id, event.target.value);
+    // Need to use DomUtils for IE8 support.
+    Meteor.call('setFamily', puzzleId, this._id,
+                DomUtils.getElementValue(event.target));
     reactivelyShow(this._id, false);
   }
 });

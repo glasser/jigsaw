@@ -32,7 +32,7 @@ if (Meteor.isServer) {
 
   var login = function (template) {
     var username = template.find('#username-other').value ||
-          template.find('#directory').value;
+          DomUtils.getElementValue(template.find('#directory'));
     if (username) {
       Jigsaw.loginAsUser(username, function (err) {
         // XXX deal with err
