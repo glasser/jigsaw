@@ -1,9 +1,17 @@
+Meteor.startup(function () {
+  Meteor.autorun(function () {
+    var puzzle = JigsawRouter.currentPuzzle();
+    if (puzzle && puzzle.title)
+      document.title = "jigsaw: Puzzle: " + puzzle.title;
+  });
+});
+
 Template.puzzlePage.puzzleId = function () {
   return JigsawRouter.currentPuzzleId();
 };
 
 Template.puzzlePage.puzzle = function () {
-  return Puzzles.findOne(JigsawRouter.currentPuzzleId());
+  return JigsawRouter.currentPuzzle();
 };
 
 Template.familiesList.allFamilies = function () {
