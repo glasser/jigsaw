@@ -12,8 +12,8 @@ Puzzles = new Meteor.Collection('puzzles');
 //   relatedQueries: list of puzzle queries?
 
 if (Meteor.isServer) {
-  Meteor.publish('puzzle', function (puzzleId) {
-    return Puzzles.find({_id: puzzleId});
+  Meteor.publish('all-puzzles', function () {
+    return Puzzles.find();
   });
 
   // XXX add add/remove puzzle methods instead
@@ -22,11 +22,12 @@ if (Meteor.isServer) {
     remove: function () { return true; }
   });
 } else {
-  Meteor.autosubscribe(function () {
-    var puzzleId = Session.get('route.puzzleId');
-    if (puzzleId)
-      Meteor.subscribe('puzzle', puzzleId);
-  });
+  Meteor.subscribe("all-puzzles");
+  // Meteor.autosubscribe(function () {
+  //   var puzzleId = Session.get('route.puzzleId');
+  //   if (puzzleId)
+  //     Meteor.subscribe('puzzle', puzzleId);
+  // });
 }
 
 
