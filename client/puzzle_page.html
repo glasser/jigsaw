@@ -1,22 +1,23 @@
-<!-- XXX get in document title -->
 <!-- XXX put puzzle tags as CSS classes in body attrs -->
 
 <template name='puzzlePage'>
-  {{#if puzzle}}
-    {{#with puzzle}}
-       {{> puzzleTitle}}
-       <div id='tagsAndMeta'>
-         {{> tagList}}
-         {{> familiesList }}
-         {{> metadataList}}
-       </div>
-       {{! XXX spreadsheets }}
-       {{! XXX related queries }}
-       {{! XXX comments }}
-       {{! XXX images }}
-    {{/with}}
-  {{else}}
-    <h3>No such puzzle</h3>
+  {{#if puzzleId}}
+    {{#if puzzle}}
+      {{#with puzzle}}
+         {{> puzzleTitle}}
+         <div id='tagsAndMeta'>
+           {{> tagList}}
+           {{> familiesList }}
+           {{> metadataList}}
+         </div>
+         {{! XXX spreadsheets }}
+         {{! XXX related queries }}
+         {{! XXX comments }}
+         {{! XXX images }}
+      {{/with}}
+    {{else}}
+      <h3>No such puzzle</h3>
+    {{/if}}
   {{/if}}
 </template>
 

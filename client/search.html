@@ -1,0 +1,9 @@
+<template name='searchPage'>
+  {{#if showing}}
+    <ul>
+    {{#each search}}
+      <li><a href="/puzzle/{{_id}}">{{title}}</a></li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</template>

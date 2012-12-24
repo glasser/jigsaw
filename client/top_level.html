@@ -3,6 +3,10 @@
 </head>
 
 <body>
+  {{> body}}
+</body>
+
+<template name='body'>
   {{#if loggingIn}}
     Logging in.
   {{else}}
@@ -12,11 +16,12 @@
       {{> userPanel}}
 
       {{> puzzlePage}}
+      {{> searchPage}}
     {{else}}
       {{> passwordForm }}
     {{/if}}
   {{/if}}
-</body>
+</template>
 
 <template name='userPanel'>
   <div>
