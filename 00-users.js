@@ -1,7 +1,19 @@
 Jigsaw = {};
 
 if (Meteor.isServer) {
-  Meteor.publish("directory", function () {
+  // Publish no data unless you're logged in.
+  Jigsaw.publish = function (name, f) {
+    Meteor.publish(name, function () {
+      if (this.userId) {
+        return f.apply(this, arguments);
+      } else {
+        this.complete();
+        return null;
+      }
+    });
+  };
+
+  Jigsaw.publish("directory", function () {
     return Meteor.users.find({}, {username: 1});
   });
 

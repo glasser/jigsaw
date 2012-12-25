@@ -12,7 +12,7 @@ Puzzles = new Meteor.Collection('puzzles');
 //   relatedQueries: list of puzzle queries?
 
 if (Meteor.isServer) {
-  Meteor.publish('all-puzzles', function () {
+  Jigsaw.publish('all-puzzles', function () {
     return Puzzles.find();
   });
 
@@ -42,7 +42,7 @@ PuzzleMetadata = new Meteor.Collection('puzzleMetadata');
 //   url: bool
 
 if (Meteor.isServer) {
-  Meteor.publish(null, function () {
+  Jigsaw.publish(null, function () {
     return PuzzleMetadata.find();
   });
 
@@ -68,7 +68,7 @@ Families = new Meteor.Collection('families');
 //    values: array of string
 
 if (Meteor.isServer) {
-  Meteor.publish(null, function () {
+  Jigsaw.publish(null, function () {
     return Families.find();
   });
 
