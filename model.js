@@ -1,6 +1,17 @@
+var newCollection = function (name) {
+  var c = new Meteor.Collection(name);
+  c.deny({
+    insert: function (userId) { return !userId; },
+    update: function (userId) { return !userId; },
+    remove: function (userId) { return !userId; },
+    fetch: []
+  });
+  return c;
+};
+
 // PUZZLES
 
-Puzzles = new Meteor.Collection('puzzles');
+Puzzles = newCollection('puzzles');
 
 // schema:
 //   title: string
@@ -36,7 +47,7 @@ if (Meteor.isServer) {
 // 'deleted'
 
 // METADATA for puzzles
-PuzzleMetadata = new Meteor.Collection('puzzleMetadata');
+PuzzleMetadata = newCollection('puzzleMetadata');
 // schema:
 //   name: string
 //   url: bool
@@ -62,7 +73,7 @@ if (Meteor.isServer) {
 }
 
 // FAMILIES of tags for puzzles (ie, popups)
-Families = new Meteor.Collection('families');
+Families = newCollection('families');
 // schema:
 //    name: string
 //    values: array of string

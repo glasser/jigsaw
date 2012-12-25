@@ -1,4 +1,23 @@
-Meteor.methods({
+Jigsaw.methods = function (methods) {
+  if (Meteor.isClient) {
+    Meteor.methods(methods);
+    return;
+  }
+
+  // On the server, we need to prevent all (user-defined) methods from doing
+  // anything unless you are logged in.
+  var wrappedMethods = {};
+  _.each(methods, function (body, name) {
+    wrappedMethods[name] = function () {
+      if (!this.userId)
+        throw new Meteor.Error(401, "Must be logged in");
+      return body.apply(this, arguments);
+    };
+  });
+  Meteor.methods(wrappedMethods);
+};
+
+Jigsaw.methods({
   removeTag: function (puzzleId, tag) {
     Puzzles.update(puzzleId, {$pull: {tags: tag}});
   },
