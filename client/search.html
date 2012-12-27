@@ -1,9 +1,31 @@
 <template name='searchPage'>
   {{#if showing}}
-    <ul>
-    {{#each search}}
-      <li><a href="/puzzle/{{_id}}">{{title}}</a></li>
-    {{/each}}
-    </ul>
+    <table class="table table-striped">
+      <tr>
+        <th>Puzzle</th>
+        {{#each allFamilies}}
+          <th>{{name}}</th>
+        {{/each}}
+         <th>Tags</th>
+        {{!-- XXX show meta --}}
+      </tr>
+      {{#each search}}
+        <tr>
+          <td><a href="/puzzle/{{_id}}">{{title}}</a></td>
+          {{#each allFamilies}}
+            <td>{{familyValue ../_id}}</td>
+          {{/each}}
+
+          <td>
+            {{#each sorted tags}}
+              {{!-- XXX Link tag to tag search page --}}
+              <span class='tag'>{{ this }}</span>
+            {{/each}}
+          </td>
+          {{!-- XXX show meta --}}
+        </tr>
+      {{/each}}
+      {{!-- XXX add puzzle --}}
+    </table>
   {{/if}}
 </template>

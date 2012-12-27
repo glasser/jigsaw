@@ -11,12 +11,14 @@
     Logging in.
   {{else}}
     {{#if currentUser}}
-      <h1>Jigsaw</h1>
+      {{> navbar}}
 
-      {{> userPanel}}
+      <div class="container">
+        {{> userPanel}}
 
-      {{> puzzlePage}}
-      {{> searchPage}}
+        {{> puzzlePage}}
+        {{> searchPage}}
+      </div>
     {{else}}
       {{> passwordForm }}
     {{/if}}
@@ -52,4 +54,17 @@
 <template name='passwordForm'>
   <p>What is the password?</p>
   <input type='password' id='globalPassword'>
+</template>
+
+<template name='navbar'>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">Jigsaw</a>
+        <ul class="nav">
+          <li><a href="/foo">Open Puzzles</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </template>
