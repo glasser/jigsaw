@@ -2,7 +2,7 @@ Meteor.startup(function () {
   Meteor.autorun(function () {
     var puzzle = JigsawRouter.currentPuzzle();
     if (puzzle && puzzle.title)
-      document.title = "jigsaw: Puzzle: " + puzzle.title;
+      document.title = "Puzzle: " + puzzle.title;
   });
 });
 

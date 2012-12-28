@@ -1,3 +1,12 @@
+Meteor.startup(function () {
+  Meteor.autorun(function () {
+    if (JigsawRouter.showingSearch()) {
+      document.title = "Puzzles " + Template.searchPage.searchDescription();
+    }
+  });
+});
+
+
 var eachQueryPiece = function (queryUrl, f) {
   var pieces = (queryUrl || '').split('/');
 
