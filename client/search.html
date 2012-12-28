@@ -14,13 +14,18 @@
         <tr>
           <td><a href="/puzzle/{{_id}}">{{title}}</a></td>
           {{#each allFamilies}}
-            <td>{{familyValue ../_id}}</td>
+            <td>
+              {{#with familyValue ../_id}}
+                {{#if this}}
+                  <a href="/search/{{../../name}}={{this}}">{{this}}</a>
+                {{/if}}
+              {{/with}}
+            </td>
           {{/each}}
 
           <td>
             {{#each sorted tags}}
-              {{!-- XXX Link tag to tag search page --}}
-              <span class='tag'>{{ this }}</span>
+              <span class='tag'><a href="/search/tag={{this}}">{{this}}</a></span>
             {{/each}}
           </td>
           {{!-- XXX show meta --}}

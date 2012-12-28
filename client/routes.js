@@ -6,7 +6,7 @@ var JigsawRouterClass = Backbone.Router.extend({
   },
   routeSearch: function (query) {
     Session.set("route.puzzleId", undefined);
-    Session.set("route.searchQuery", query);
+    Session.set("route.searchQuery", query || '');
   },
   routePuzzle: function (puzzleId) {
     Session.set("route.puzzleId", puzzleId);
