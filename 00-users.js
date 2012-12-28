@@ -1,5 +1,3 @@
-Jigsaw = {};
-
 if (Meteor.isServer) {
   // Publish no data unless you're logged in.
   Jigsaw.publish = function (name, f) {
