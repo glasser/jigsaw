@@ -63,6 +63,7 @@
             {{#show section=_id useEditButton=true}}
               {{name}}:
               <select id='family-{{_id}}' class='setFamily focus-{{_id}}'>
+                <option></option>
                 {{#each values}}
                   <option {{maybeSelected ../_id}}>{{this}}</option>
                 {{/each}}
