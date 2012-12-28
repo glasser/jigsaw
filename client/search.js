@@ -10,9 +10,16 @@ Meteor.startup(function () {
 var eachQueryPiece = function (queryUrl, f) {
   var pieces = (queryUrl || '').split('/');
 
+  var foundDeleted = false;
+
   _.each(pieces, function (piece) {
     if (piece.length === 0)
       return;
+    var negate = false;
+    if (piece.substr(0, 1) === '-') {
+      negate = true;
+      piece = piece.substr(1);
+    }
     var equalsLocation = piece.indexOf('=');
     var command, arg;
     if (equalsLocation === -1) {
@@ -22,23 +29,45 @@ var eachQueryPiece = function (queryUrl, f) {
       command = piece.substr(0, equalsLocation);
       arg = piece.substr(equalsLocation + 1);
     }
-    f(command, arg);
+
+    if (command === 'tag' && arg === 'deleted')
+      foundDeleted = true;
+    f(command, arg, negate);
   });
+
+  // If the query doesn't explicitly ask for deleted puzzles, we filter them
+  // out.
+  if (!foundDeleted)
+    f('tag', 'deleted', true);
 };
 
 var queryUrlToSelector = function (queryUrl) {
   var selector = {};
-  eachQueryPiece(queryUrl, function (command, arg) {
+  eachQueryPiece(queryUrl, function (command, arg, negate) {
     if (command === 'tag') {
       if (!selector.tags)
-        selector.tags = {$all: []};
-      selector.tags.$all.push(arg);
+        selector.tags = {};
+      var subSelector = negate ? '$nin' : '$all';
+      if (!selector.tags[subSelector])
+        selector.tags[subSelector] = [];
+      selector.tags[subSelector].push(arg);
       return;
     }
     var family = Families.findOne({name: command});
     if (family) {
-      selector['families.' + family._id] = arg;
-      return;
+      var familyKey = 'families.' + family._id;
+      if (negate) {
+        // Positive searches override negatives.
+        if (_.isString(selector[familyKey]))
+          return;
+        if (!selector[familyKey])
+          selector[familyKey] = {$nin: []};
+        selector[familyKey].$nin.push(arg);
+      } else {
+        // Positive searches override negatives.
+        selector[familyKey] = arg;
+        return;
+      }
     }
     // XXX other cases?
   });
@@ -47,14 +76,14 @@ var queryUrlToSelector = function (queryUrl) {
 
 var queryUrlToDescription = function (queryUrl) {
   var description = [];
-  eachQueryPiece(queryUrl, function (command, arg) {
+  eachQueryPiece(queryUrl, function (command, arg, negate) {
     if (command === 'tag') {
-      description.push(arg);
+      description.push((negate ? 'not ' : '') + arg);
       return;
     }
     var family = Families.findOne({name: command});
     if (family) {
-      description.push(command + ': ' + arg);
+      description.push(command + (negate ? ' ≠ ' : ' = ') + arg);
     }
   });
 
