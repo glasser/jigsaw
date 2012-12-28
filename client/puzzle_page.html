@@ -38,8 +38,7 @@
       Tags:
       {{#show section='tagEditor' useEditButton=true hideIcon='ok'}}
         {{#each sorted tags}}
-          {{! XXX Link tag to tag search page }}
-          <span class='tag'>{{ this }}</span>
+          <span class='tag'><a href="/search/tag={{this}}">{{this}}</a></span>
           <button class='btn removeTag'><i class='icon-remove'></i></button>
         {{/each}}
         <span class='input-append'>
@@ -48,8 +47,7 @@
         </span>
       {{else}}
         {{#each sorted tags}}
-          {{! XXX Link tag to tag search page }}
-          <span class='tag'>{{ this }}</span>
+          <span class='tag'><a href="/search/tag={{this}}">{{this}}</a></span>
         {{/each}}
       {{/show}}
     </div>
@@ -71,8 +69,11 @@
               </select>
             {{else}}
               {{name}}:
-              {{! XXX link to search page }}
-              <strong>{{familyValue}}</strong>
+              {{#with familyValue}}
+                {{#if this}}
+                  <a href="/search/{{../../name}}={{this}}"><strong>{{this}}</strong></a>
+                {{/if}}
+              {{/with}}
             {{/show}}
           </div>
         </li>
