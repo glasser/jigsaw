@@ -70,6 +70,12 @@ if (Meteor.isServer) {
     PuzzleMetadata.insert({name: "Answer"});
     PuzzleMetadata.insert({name: "Wrong answers"});
   }
+} else {
+  Handlebars.registerHelper("allMetadata", function () {
+    // Want to sort in some consistent order; maybe should actually define a
+    // sort key or something later.
+    return PuzzleMetadata.find({}, {sort: ['name']});
+  });
 }
 
 // FAMILIES of tags for puzzles (ie, popups)

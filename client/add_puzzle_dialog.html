@@ -7,22 +7,45 @@
         <h3>Add puzzle</h3>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body form-horizontal">
         {{#if error}}
           <div class="alert alert-error">{{error}}</div>
         {{/if}}
 
-        <label>Title</label>
-        <input type="text" class="title span5 focus-addPuzzle">
+        <div class="control-group">
+          <label class="control-label">Title</label>
+          <div class="controls">
+            <input type="text" class="focus-addPuzzle" />
+          </div>
+        </div>
 
         {{#each allFamilies}}
-          <label>{{name}}</label>
-          <select>
-            <option></option>
-            {{#each values}}
-              <option>{{this}}</option>
-            {{/each}}
-          </select>
+          <div class="control-group">
+          <label class="control-label">{{name}}</label>
+          <div class="controls">
+            <select>
+              <option></option>
+              {{#each values}}
+                <option>{{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+        {{/each}}
+
+        <div class="control-group">
+          <label class="control-label">Tags</label>
+          <div class="controls">
+            <input type="text" />
+          </div>
+        </div>
+
+        {{#each allMetadata}}
+          <div class="control-group">
+            <label class="control-label">{{name}}</label>
+            <div class="controls">
+              <input type="text" />
+            </div>
+          </div>
         {{/each}}
       </div>
 

@@ -31,11 +31,6 @@ Template.familiesList.maybeSelected = function (familyId) {
           ? 'selected' : '');
 };
 
-Template.metadataList.allMetadata = function () {
-  // XXX sort?
-  return PuzzleMetadata.find();
-};
-
 Template.metadataList.metadataValue = function () {
   //  XXX _get top level
   var puzzle = Template.puzzlePage.puzzle();
