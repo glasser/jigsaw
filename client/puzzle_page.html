@@ -36,18 +36,21 @@
   <div id='tagList'>
     <div class='form-inline'>
       Tags:
-      {{#each sorted tags}}
-        {{! XXX Link tag to tag search page }}
-        <span class='tag'>{{ this }}</span>
-        {{#if showing 'tagEditor'}}
-          <button class='btn removeTag'><i class='icon-remove'></i></button>
-        {{/if}}
-      {{/each}}
       {{#show section='tagEditor' useEditButton=true hideIcon='ok'}}
+        {{#each sorted tags}}
+          {{! XXX Link tag to tag search page }}
+          <span class='tag'>{{ this }}</span>
+          <button class='btn removeTag'><i class='icon-remove'></i></button>
+        {{/each}}
         <span class='input-append'>
           <input type='text' id='addTag' class='focus-tagEditor' placeholder='new tag'>
           <button class='btn' id='addTagButton'><i class='icon-plus'></i></button>
         </span>
+      {{else}}
+        {{#each sorted tags}}
+          {{! XXX Link tag to tag search page }}
+          <span class='tag'>{{ this }}</span>
+        {{/each}}
       {{/show}}
     </div>
   </div>
@@ -59,14 +62,15 @@
       {{#each allFamilies}}
         <li>
           <div class='form-inline'>
-            {{name}}:
             {{#show section=_id useEditButton=true}}
+              {{name}}:
               <select id='family-{{_id}}' class='setFamily focus-{{_id}}'>
                 {{#each values}}
                   <option {{maybeSelected ../_id}}>{{this}}</option>
                 {{/each}}
               </select>
             {{else}}
+              {{name}}:
               {{! XXX link to search page }}
               <strong>{{familyValue}}</strong>
             {{/show}}
@@ -83,11 +87,12 @@
       {{#each allMetadata}}
         <li>
           <div class='form-inline'>
-            {{name}}:
             {{#show section=_id useEditButton=true}}
+              {{name}}:
               <input type='text' id='metadata-{{_id}}'
                      class='setMetadata focus-{{_id}}' value='{{metadataValue}}'>
             {{else}}
+              {{name}}:
               {{#if url}}
                 <a href='{{metadataValue}}' target='_blank'>{{metadataValue}}</a>
               {{else}}

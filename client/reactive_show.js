@@ -1,18 +1,18 @@
 Handlebars.registerHelper("show", function (options) {
   if (reactivelyShowing(options.hash.section)) {
-    return options.fn(this) + Template.reactiveHideLink({
+    return Template.reactiveHideLink({
       section: options.hash.section,
       hideIcon: options.hash.hideIcon || 'ban-circle'
-    });
+    }) + options.fn(this);
   }
   var hidden = '';
   if (options.inverse) {
     hidden = options.inverse(this);
   }
-  return hidden + Template.reactiveShowLink({
+  return Template.reactiveShowLink({
     section: options.hash.section,
     useEditButton: options.hash.useEditButton,
-    linkText: options.hash.linkText || '[show]'});
+    linkText: options.hash.linkText || '[show]'}) + hidden;
 });
 
 // for use with #if
