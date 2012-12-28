@@ -1,8 +1,3 @@
-var queryUrlToSelector = function (query) {
-  // no specific queries
-  return {};
-};
-
 var JigsawRouterClass = Backbone.Router.extend({
   routes: {
     "puzzle/:puzzleId": "routePuzzle",
@@ -11,7 +6,7 @@ var JigsawRouterClass = Backbone.Router.extend({
   },
   routeSearch: function (query) {
     Session.set("route.puzzleId", undefined);
-    Session.set("route.searchQuery", queryUrlToSelector(query));
+    Session.set("route.searchQuery", query);
   },
   routePuzzle: function (puzzleId) {
     Session.set("route.puzzleId", puzzleId);
@@ -32,8 +27,8 @@ var JigsawRouterClass = Backbone.Router.extend({
   showingSearch: function () {
     return !Session.equals("route.searchQuery", undefined);
   },
-  currentSearch: function () {
-    return Puzzles.find(Session.get("route.searchQuery"));
+  currentSearchQueryUrl: function () {
+    return Session.get("route.searchQuery");
   }
 });
 
