@@ -97,6 +97,12 @@ if (Meteor.isServer) {
       values: ["New", "Solved", "Needs Insight", "Needs Research"]
     });
   }
+} else {
+  Handlebars.registerHelper("allFamilies", function () {
+    // Want to sort in some consistent order; maybe should actually define a
+    // sort key or something later.
+    return Families.find({}, {sort: ['name']});
+  });
 }
 
 // COMMENTS

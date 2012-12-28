@@ -13,9 +13,13 @@
     {{#if currentUser}}
       {{> navbar}}
 
+      {{!-- dialogs --}}
+      {{> addPuzzleDialog}}
+
       <div class="container">
         {{> userPanel}}
 
+        {{!-- pages --}}
         {{> puzzlePage}}
         {{> searchPage}}
       </div>

@@ -73,12 +73,6 @@ Template.searchPage.searchDescription = function () {
   return queryUrlToDescription(JigsawRouter.currentSearchQueryUrl());
 };
 
-Template.searchPage.allFamilies = function () {
-  // Want to sort in some consistent order; maybe should actually define a sort
-  // key or something later.
-  return Families.find({}, {sort: ['name']});
-};
-
 // 'this' is a Families object
 Template.searchPage.familyValue = function (puzzleId) {
   var puzzle = Puzzles.findOne(puzzleId);

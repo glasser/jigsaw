@@ -1,0 +1,35 @@
+<template name='addPuzzleDialog'>
+  {{#if showing}}
+    <div class="mask"> </div>
+    <div class="modal">
+      <div class="modal-header">
+        <button type="button" class="close cancel">&times;</button>
+        <h3>Add puzzle</h3>
+      </div>
+
+      <div class="modal-body">
+        {{#if error}}
+          <div class="alert alert-error">{{error}}</div>
+        {{/if}}
+
+        <label>Title</label>
+        <input type="text" class="title span5 focus-addPuzzle">
+
+        {{#each allFamilies}}
+          <label>{{name}}</label>
+          <select>
+            <option></option>
+            {{#each values}}
+              <option>{{this}}</option>
+            {{/each}}
+          </select>
+        {{/each}}
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" class="btn cancel">Cancel</a>
+        <a href="#" class="btn btn-primary save">Add party</a>
+      </div>
+    </div>
+  {{/if}}
+</template>

@@ -53,5 +53,13 @@ Template.body.events({
       evt.preventDefault();
       JigsawRouter.navigate(href, true);
     }
+  },
+
+  'click .show-add-puzzle': function () {
+    Session.set('dialog.addPuzzle', true);
+    Meteor.flush();
+    var focusElement = DomUtils.find(document, '.focus-addPuzzle');
+    if (focusElement)
+      focusElement.focus();
   }
 });
