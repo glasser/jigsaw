@@ -41,6 +41,13 @@ if (Meteor.isServer) {
   // });
 }
 
+var tagStringToArray = function (tagString) {
+  var nonEmptyTags = _.filter(tagString.split(' '), _.identity);
+  var lowerCaseTags = _.map(nonEmptyTags, function (t) {
+    return t.toLowerCase();
+  });
+  return _.uniq(lowerCaseTags);
+};
 
 // puzzle queries need sorts (which was weird in AE), tags, negative tags,
 // metadata to show. families were like tags. also, by default we filter out

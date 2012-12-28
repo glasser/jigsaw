@@ -15,7 +15,7 @@
         <div class="control-group">
           <label class="control-label">Title</label>
           <div class="controls">
-            <input type="text" class="focus-addPuzzle" />
+            <input type="text" class="title focus-addPuzzle" />
           </div>
         </div>
 
@@ -23,7 +23,7 @@
           <div class="control-group">
           <label class="control-label">{{name}}</label>
           <div class="controls">
-            <select>
+            <select class="family" data-id="{{_id}}">
               <option></option>
               {{#each values}}
                 <option>{{this}}</option>
@@ -35,7 +35,7 @@
         <div class="control-group">
           <label class="control-label">Tags</label>
           <div class="controls">
-            <input type="text" />
+            <input type="text" class="tags" />
           </div>
         </div>
 
@@ -43,7 +43,7 @@
           <div class="control-group">
             <label class="control-label">{{name}}</label>
             <div class="controls">
-              <input type="text" />
+              <input type="text" class="metadata" data-id="{{_id}}" />
             </div>
           </div>
         {{/each}}
@@ -51,7 +51,7 @@
 
       <div class="modal-footer">
         <a href="#" class="btn cancel">Cancel</a>
-        <a href="#" class="btn btn-primary save">Add party</a>
+        <a href="#" class="btn btn-primary save">Add puzzle</a>
       </div>
     </div>
   {{/if}}

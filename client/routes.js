@@ -57,6 +57,7 @@ Template.body.events({
 
   'click .show-add-puzzle': function () {
     Session.set('dialog.addPuzzle', true);
+    Session.set('dialog.addPuzzle.error', '');
     Meteor.flush();
     var focusElement = DomUtils.find(document, '.focus-addPuzzle');
     if (focusElement)

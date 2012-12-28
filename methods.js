@@ -21,8 +21,11 @@ Jigsaw.methods({
   removeTag: function (puzzleId, tag) {
     Puzzles.update(puzzleId, {$pull: {tags: tag}});
   },
-  addTag: function (puzzleId, tag) {
-    Puzzles.update(puzzleId, {$addToSet: {tags: tag}});
+  addTags: function (puzzleId, newTagsString) {
+    var newTagsArray = tagStringToArray(newTagsString);
+    if (_.isEmpty(newTagsArray))
+      return;
+    Puzzles.update(puzzleId, {$addToSet: {tags: {$each: newTagsArray}}});
   },
   setTitle: function (puzzleId, newTitle) {
     Puzzles.update(puzzleId, {$set: {title: newTitle}});
@@ -38,5 +41,15 @@ Jigsaw.methods({
     var set = {};
     set[key] = value;
     Puzzles.update(puzzleId, {$set: set});
+  },
+  createPuzzle: function (title, tags, families, metadata) {
+    var puzzle = {title: title};
+    if (tags && !_.isEmpty(tags))
+      puzzle.tags = tags;
+    if (families && !_.isEmpty(families))
+      puzzle.families = families;
+    if (metadata && !_.isEmpty(metadata))
+      puzzle.metadata = metadata;
+    return Puzzles.insert(puzzle);
   }
 });
