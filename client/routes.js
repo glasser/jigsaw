@@ -48,7 +48,7 @@ Template.body.events({
 
     // Use getAttribute instead of ".href" since the latter normalizes to a full
     // URL.
-    var href = evt.target.getAttribute('href');
+    var href = evt.currentTarget.getAttribute('href');
     if (href && href.substr(0, 1) === '/') {
       evt.preventDefault();
       JigsawRouter.navigate(href, true);
