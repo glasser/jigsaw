@@ -92,15 +92,18 @@ var addLinkPermission = function (accessToken, docId) {
 
 
 Jigsaw.methods({
-  createSpreadsheet: function (title) {
+  createSpreadsheet: function (puzzleId, title) {
     if (!Meteor.settings || !Meteor.settings.googleApi)
       throw new Meteor.Error(500, "google API not configured");
+    if (!Puzzles.findOne(puzzleId))
+      throw new Meteor.Error(404, "no such puzzle");
     var accessToken = getAccessToken(Meteor.settings.googleApi);
     var sheetDoc = createSpreadsheet(accessToken, title);
     addLinkPermission(accessToken, sheetDoc.id);
-    return Spreadsheets.insert({docId: sheetDoc.id,
-                                link: sheetDoc.alternateLink,
-                                embedLink: sheetDoc.embedLink});
+    Puzzles.update(puzzleId, {$push: {spreadsheets:
+                                      {docId: sheetDoc.id,
+                                       link: sheetDoc.alternateLink,
+                                       embedLink: sheetDoc.embedLink}}});
   }
 });
 })();

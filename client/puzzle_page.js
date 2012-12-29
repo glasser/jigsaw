@@ -50,7 +50,7 @@ var addTags = function (event, template, newTagsString) {
   Meteor.call('addTags', puzzleId, newTagsString);
   template.find('#addTags').value = '';
 };
-Template.puzzlePage.events({
+Template.tagList.events({
   // TAGS
   'click .removeTag': function (event, template) {
     var puzzleId = JigsawRouter.currentPuzzleId();
@@ -58,13 +58,13 @@ Template.puzzlePage.events({
       Meteor.call('removeTag', puzzleId, this);
   },
   'click #addTagsButton': function (event, template) {
-    var addTagsInput = template.find('#addsTag');
+    var addTagsInput = template.find('#addTags');
     if (!addTagsInput)
       return;
     addTags(event, template, addTagsInput.value || "");
   }
 });
-Template.puzzlePage.events(okCancelEvents(
+Template.tagList.events(okCancelEvents(
   '#addTags', {
     ok: addTags,
     cancel: function () {
@@ -72,7 +72,7 @@ Template.puzzlePage.events(okCancelEvents(
     }}));
 
 // TITLE
-Template.puzzlePage.events(okCancelEvents(
+Template.puzzleTitle.events(okCancelEvents(
   '#setTitle', {
     ok: function (event, template, newTitle) {
       if (!newTitle)
@@ -88,7 +88,7 @@ Template.puzzlePage.events(okCancelEvents(
     }}));
 
 // METADATA
-Template.puzzlePage.events(okCancelEvents(
+Template.metadataList.events(okCancelEvents(
   '.setMetadata', {
     ok: function (event, template, value) {
       var puzzleId = JigsawRouter.currentPuzzleId();
@@ -113,3 +113,48 @@ Template.puzzlePage.events({
     reactivelyShow(this._id, false);
   }
 });
+
+var addSpreadsheet = function (event, template, titlePiece) {
+  var puzzle = JigsawRouter.currentPuzzle();
+  if (!puzzle)
+    return;
+  var title = titlePiece ? (titlePiece + ' [' + puzzle.title + ']')
+        : puzzle.title;
+  var addSpreadsheetInput = template.find('#addSpreadsheet');
+  if (!addSpreadsheetInput)
+    return;
+  var addSpreadsheetButton = template.find('#addSpreadsheetButton');
+  if (!addSpreadsheetButton)
+    return;
+  addSpreadsheetInput.value = '';
+  addSpreadsheetInput.disabled = true;
+  addSpreadsheetButton.disabled = true;
+  Meteor.call('createSpreadsheet', puzzle._id, title, function (err, result) {
+    if (err) {
+      alert(err);
+    }
+    addSpreadsheetInput.disabled = false;
+    addSpreadsheetButton.disabled = false;
+  });
+};
+
+// SPREADSHEETS
+Template.spreadsheets.events({
+  'click #addSpreadsheetButton': function (event, template) {
+    var addSpreadsheetInput = template.find('#addSpreadsheet');
+    if (!addSpreadsheetInput)
+      return;
+    addSpreadsheet(event, template, addSpreadsheetInput.value || "");
+  }
+});
+Template.spreadsheets.events(okCancelEvents(
+  '#addSpreadsheet', {ok: addSpreadsheet}));
+
+// Hack to make the spreadsheets template auto-refresh every 30 seconds.
+Template.spreadsheets.autoRefresh = function () {
+  var context = Meteor.deps.Context.current;
+  if (context)
+    Meteor.setTimeout(function () {
+      context.invalidate();
+    }, 30*1000);
+};

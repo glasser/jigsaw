@@ -20,6 +20,10 @@ Puzzles = newCollection('puzzles');
 //       family ID -> family value (strings)
 //   metadata: object
 //       metadata ID -> value
+//   spreadsheets: list of objects
+//       docId: string
+//       link: string
+//       embedLink: string
 //   relatedQueries: list of puzzle queries?
 
 if (Meteor.isServer) {
@@ -145,24 +149,3 @@ if (Meteor.isServer) {
 
 // HEADER LINKS
 // CUSTOM CSS
-
-
-// SPREADSHEETS
-
-Spreadsheets = newCollection('spreadsheets');
-// schema:
-//   docId: string
-//   link: string
-//   embedLink: string
-
-if (Meteor.isServer) {
-  Jigsaw.publish(null, function () {
-    return Spreadsheets.find();
-  });
-
-  Spreadsheets.deny({
-    insert: function () { return true; },
-    remove: function () { return true; },
-    update: function () { return true; }
-  });
-}

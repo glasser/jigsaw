@@ -10,7 +10,7 @@
            {{> familiesList }}
            {{> metadataList}}
          </div>
-         {{! XXX spreadsheets }}
+         {{> spreadsheets }}
          {{! XXX related queries }}
          {{! XXX comments }}
          {{! XXX images }}
@@ -106,4 +106,20 @@
       {{/each}}
     </ul>
   </div>
+</template>
+
+<template name='spreadsheets'>
+  {{autoRefresh}}
+  <h4>Spreadsheets</h4>
+  {{#each spreadsheets}}
+    <a href="{{link}}" target="spreadsheet+{{docId}}">Edit Spreadsheet</a>
+    <br/>
+    <iframe width='80%' height='250' frameborder='1'
+            src="{{link}}&amp;output=html&amp;widget=true"></iframe>
+    <br/>
+  {{/each}}
+  <span class='input-append'>
+    <input type='text' id='addSpreadsheet' placeholder='spreadsheet name'/>
+    <button class='btn' id='addSpreadsheetButton'><i class='icon-plus'></i></button>
+  </span>
 </template>
