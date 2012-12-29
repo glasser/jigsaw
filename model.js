@@ -94,6 +94,7 @@ Families = newCollection('families');
 // schema:
 //    name: string
 //    values: array of string
+//    default: string (should be in values)
 
 if (Meteor.isServer) {
   Jigsaw.publish(null, function () {
@@ -111,7 +112,8 @@ if (Meteor.isServer) {
   if (Families.find().count() === 0) {
     Families.insert({
       name: "Status",
-      values: ["New", "Solved", "Needs Insight", "Needs Research"]
+      values: ["New", "Solved", "Needs Insight", "Needs Research"],
+      default: "New"
     });
   }
 } else {

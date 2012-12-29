@@ -73,20 +73,30 @@ Template.addPuzzleDialog.tagDefault = function () {
 };
 
 Template.addPuzzleDialog.familyMaybeSelected = function (familyName) {
+  var family = Families.findOne({name: familyName});
+  if (!family)
+    return '';
+
   // For some reason the "this" value is coerced into a "String" object rather
   // than a string literal. Get the string back so that equality works.
   var familyValue = this.valueOf();
   if (!JigsawRouter.showingSearch())
     return '';
   var selected = undefined;
-  // Find the first non-negative query for this family and decide to be selected
+  // Find the first positive query for this family and decide to be selected
   // based on whether it is my value.
   eachQueryPiece(JigsawRouter.currentSearchQueryUrl(), function (command, arg, negate) {
     if (selected === undefined && command === familyName && !negate) {
       selected = (arg === familyValue);
     }
   });
-  return selected ? 'selected' : '';
+
+  // There was a positive query for this family, so go based on that.
+  if (selected !== undefined)
+    return selected ? 'selected' : '';
+
+  // No positive query. Is this the default?
+  return (family.default === familyValue ? 'selected' : '');
 };
 
 })();

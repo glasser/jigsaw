@@ -58,14 +58,16 @@ var queryUrlToSelector = function (queryUrl) {
       var familyKey = 'families.' + family._id;
       if (negate) {
         // Positive searches override negatives.
-        if (_.isString(selector[familyKey]))
+        if (selector[familyKey] && selector[familyKey].$in)
           return;
         if (!selector[familyKey])
           selector[familyKey] = {$nin: []};
         selector[familyKey].$nin.push(arg);
       } else {
         // Positive searches override negatives.
-        selector[familyKey] = arg;
+        if (!selector[familyKey] || selector[familyKey].$nin)
+          selector[familyKey] = {$in: []};
+        selector[familyKey].$in.push(arg);
         return;
       }
     }
