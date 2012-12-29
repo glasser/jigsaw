@@ -93,7 +93,7 @@ var addLinkPermission = function (accessToken, docId) {
 
 Jigsaw.methods({
   createSpreadsheet: function (puzzleId, title) {
-    if (!Meteor.settings || !Meteor.settings.googleApi)
+    if (!Meteor.settings.googleApi)
       throw new Meteor.Error(500, "google API not configured");
     if (!Puzzles.findOne(puzzleId))
       throw new Meteor.Error(404, "no such puzzle");

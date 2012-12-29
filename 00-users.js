@@ -48,8 +48,7 @@ if (Meteor.isServer) {
     if (Meteor.userId())
       throw new Meteor.Error('Already logged in!');
 
-    // XXX store password somewhere
-    if (options.globalPassword !== 'secret')
+    if (options.globalPassword !== (Meteor.settings.globalPassword || 'secret'))
       throw new Meteor.Error('Wrong password!');
     return logInAsUsername('nobody');
   });
