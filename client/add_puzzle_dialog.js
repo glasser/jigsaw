@@ -61,4 +61,32 @@ Template.addPuzzleDialog.events({
 Template.addPuzzleDialog.events(okCancelEvents(
   '', {ok: createPuzzle, cancel: closeDialog}));
 
+Template.addPuzzleDialog.tagDefault = function () {
+  if (!JigsawRouter.showingSearch())
+    return '';
+  var tags = [];
+  eachQueryPiece(JigsawRouter.currentSearchQueryUrl(), function (command, arg, negate) {
+    if (command === 'tag' && !negate)
+      tags.push(arg);
+  });
+  return tags.join(' ');
+};
+
+Template.addPuzzleDialog.familyMaybeSelected = function (familyName) {
+  // For some reason the "this" value is coerced into a "String" object rather
+  // than a string literal. Get the string back so that equality works.
+  var familyValue = this.valueOf();
+  if (!JigsawRouter.showingSearch())
+    return '';
+  var selected = undefined;
+  // Find the first non-negative query for this family and decide to be selected
+  // based on whether it is my value.
+  eachQueryPiece(JigsawRouter.currentSearchQueryUrl(), function (command, arg, negate) {
+    if (selected === undefined && command === familyName && !negate) {
+      selected = (arg === familyValue);
+    }
+  });
+  return selected ? 'selected' : '';
+};
+
 })();

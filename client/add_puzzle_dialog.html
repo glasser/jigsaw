@@ -26,7 +26,7 @@
             <select class="family" data-id="{{_id}}">
               <option></option>
               {{#each values}}
-                <option>{{this}}</option>
+                <option {{familyMaybeSelected ../name}}>{{this}}</option>
               {{/each}}
             </select>
           </div>
@@ -35,7 +35,7 @@
         <div class="control-group">
           <label class="control-label">Tags</label>
           <div class="controls">
-            <input type="text" class="tags" />
+            <input type="text" class="tags" value="{{tagDefault}}"/>
           </div>
         </div>
 
