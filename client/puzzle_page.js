@@ -151,10 +151,10 @@ Template.spreadsheets.events(okCancelEvents(
   '#addSpreadsheet', {ok: addSpreadsheet}));
 
 // Hack to make the spreadsheets template auto-refresh every 30 seconds.
+var spreadsheetRefreshSet = new Meteor.deps._ContextSet;
+Meteor.setInterval(function () {
+  spreadsheetRefreshSet.invalidateAll();
+}, 30*1000);
 Template.spreadsheets.autoRefresh = function () {
-  var context = Meteor.deps.Context.current;
-  if (context)
-    Meteor.setTimeout(function () {
-      context.invalidate();
-    }, 30*1000);
+  spreadsheetRefreshSet.addCurrentContext();
 };
