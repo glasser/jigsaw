@@ -2,15 +2,23 @@ var JigsawRouterClass = Backbone.Router.extend({
   routes: {
     "puzzle/:puzzleId": "routePuzzle",
     "search/*query": "routeSearch",
+    "admin": "routeAdmin",
     "": "routeSearch"
   },
   routeSearch: function (query) {
     Session.set("route.puzzleId", undefined);
     Session.set("route.searchQuery", query || '');
+    Session.set("route.admin", undefined);
   },
   routePuzzle: function (puzzleId) {
     Session.set("route.puzzleId", puzzleId);
     Session.set("route.searchQuery", undefined);
+    Session.set("route.admin", undefined);
+  },
+  routeAdmin: function () {
+    Session.set("route.puzzleId", undefined);
+    Session.set("route.searchQuery", undefined);
+    Session.set("route.admin", true);
   },
   navigateToPuzzle: function (puzzleId) {
     this.navigate("puzzle/" + puzzleId, true);
@@ -26,6 +34,9 @@ var JigsawRouterClass = Backbone.Router.extend({
   },
   showingSearch: function () {
     return !Session.equals("route.searchQuery", undefined);
+  },
+  showingAdmin: function () {
+    return Session.equals("route.admin", true);
   },
   currentSearchQueryUrl: function () {
     return Session.get("route.searchQuery");

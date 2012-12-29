@@ -1,0 +1,30 @@
+<template name='adminPage'>
+  {{#if showing}}
+    <h3>Administrivia</h3>
+
+    {{> adminBanners}}
+  {{/if}}
+</template>
+
+<template name='adminBanners'>
+  <h4>Banners</h4>
+  <table class='table table-striped'>
+    <tr>
+      <th>Banner</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+    {{#each allBanners}}
+      <tr>
+        <td>{{content}}</td>
+        <td>{{huntTime created}}</td>
+        <td><button class='btn removeBanner'><i class='icon-remove'></i></button></td>
+      </tr>
+    {{/each}}
+  </table>
+  <span class='input-append'>
+    <input class='span5' type='text' id='addBanner' placeholder='new banner'>
+    <button class='btn' id='addBannerButton'><i class='icon-plus'></i></button>
+  </span>
+  </ul>
+</template>

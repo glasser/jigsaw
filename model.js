@@ -24,7 +24,7 @@ Puzzles = newCollection('puzzles');
 //       docId: string
 //       link: string
 //       embedLink: string
-//   relatedQueries: list of puzzle queries?
+//   relatedQueries: list of puzzle queries? [XXX]
 
 if (Meteor.isServer) {
   Jigsaw.publish('all-puzzles', function () {
@@ -137,10 +137,28 @@ if (Meteor.isServer) {
 
 // BANNERS
 // manually set banners that go on every page
-
+Banners = newCollection('banners');
 //  schema:
 //     content
-//     created
+//     created (server-side timestamp)
+
+if (Meteor.isServer) {
+  Jigsaw.publish(null, function () {
+    return Banners.find();
+  });
+
+  // You don't get to update banners, and insert is done via method to add
+  // server-side timestamp, but remove is OK.
+  Banners.allow({
+    remove: function () { return true; }
+  });
+} else {
+  Handlebars.registerHelper("allBanners", function () {
+    // Want to sort in some consistent order; maybe should actually define a
+    // sort key or something later.
+    return Banners.find({}, {sort: {created: -1}});
+  });
+}
 
 // NEWSFEED
 // display recent things that happened

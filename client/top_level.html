@@ -17,11 +17,15 @@
       {{> addPuzzleDialog}}
 
       <div class="container">
-        {{> userPanel}}
+        <div class="row">
+          {{> userPanel}}
+          {{> banners}}
+        </div>
 
         {{!-- pages --}}
         {{> puzzlePage}}
         {{> searchPage}}
+        {{> adminPage}}
       </div>
     {{else}}
       {{> passwordForm }}
@@ -30,7 +34,7 @@
 </template>
 
 <template name='userPanel'>
-  <div>
+  <div class="span4">
       You are:
       {{#if isNobody}}
         nobody. Please log in:
@@ -67,8 +71,19 @@
         <a class="brand" href="/">Jigsaw</a>
         <ul class="nav">
           <li><a href="/foo">Open Puzzles</a></li>
+          <li><a href="/admin">Admin</a></li>
         </ul>
       </div>
     </div>
+  </div>
+</template>
+
+<template name='banners'>
+  <div class="alert alert-info span4">
+    <ul>
+      {{#each allBanners}}
+      <li><em>[{{huntTime created}}]</em> {{content}}</li>
+      {{/each}}
+    </ul>
   </div>
 </template>

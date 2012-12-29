@@ -114,41 +114,32 @@ Template.puzzlePage.events({
   }
 });
 
-var addSpreadsheet = function (event, template, titlePiece) {
-  var puzzle = JigsawRouter.currentPuzzle();
-  if (!puzzle)
-    return;
-  var title = titlePiece ? (titlePiece + ' [' + puzzle.title + ']')
-        : puzzle.title;
-  var addSpreadsheetInput = template.find('#addSpreadsheet');
-  if (!addSpreadsheetInput)
-    return;
-  var addSpreadsheetButton = template.find('#addSpreadsheetButton');
-  if (!addSpreadsheetButton)
-    return;
-  addSpreadsheetInput.value = '';
-  addSpreadsheetInput.disabled = true;
-  addSpreadsheetButton.disabled = true;
-  Meteor.call('createSpreadsheet', puzzle._id, title, function (err, result) {
-    if (err) {
-      alert(err);
-    }
-    addSpreadsheetInput.disabled = false;
-    addSpreadsheetButton.disabled = false;
-  });
-};
-
 // SPREADSHEETS
-Template.spreadsheets.events({
-  'click #addSpreadsheetButton': function (event, template) {
-    var addSpreadsheetInput = template.find('#addSpreadsheet');
+Template.spreadsheets.events(addButtonEvents(
+  '#addSpreadsheet', '#addSpreadsheetButton',
+  function (event, template, titlePiece, addSpreadsheetInput) {
+    var puzzle = JigsawRouter.currentPuzzle();
+    if (!puzzle)
+      return;
+    var title = titlePiece ? (titlePiece + ' [' + puzzle.title + ']')
+          : puzzle.title;
     if (!addSpreadsheetInput)
       return;
-    addSpreadsheet(event, template, addSpreadsheetInput.value || "");
-  }
-});
-Template.spreadsheets.events(okCancelEvents(
-  '#addSpreadsheet', {ok: addSpreadsheet}));
+    var addSpreadsheetButton = template.find('#addSpreadsheetButton');
+    if (!addSpreadsheetButton)
+      return;
+    addSpreadsheetInput.value = '';
+    addSpreadsheetInput.disabled = true;
+    addSpreadsheetButton.disabled = true;
+    Meteor.call('createSpreadsheet', puzzle._id, title, function (err, result) {
+      if (err) {
+        alert(err);
+      }
+      addSpreadsheetInput.disabled = false;
+      addSpreadsheetButton.disabled = false;
+    });
+  }));
+
 
 // Hack to make the spreadsheets template auto-refresh every 30 seconds.
 var spreadsheetRefreshSet = new Meteor.deps._ContextSet;
