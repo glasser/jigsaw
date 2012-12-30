@@ -8,8 +8,10 @@
         {{#each allFamilies}}
           <th>{{name}}</th>
         {{/each}}
-         <th>Tags</th>
-        {{!-- XXX show meta --}}
+        <th>Tags</th>
+        {{#each metadataInSearch}}
+          <th>{{name}}</th>
+        {{/each}}
       </tr>
       {{#each search}}
         <tr>
@@ -29,7 +31,20 @@
               <span class='tag'><a href="/search/tag={{this}}">{{this}}</a></span>
             {{/each}}
           </td>
-          {{!-- XXX show meta --}}
+
+          {{#each metadataInSearch}}
+            <td>
+              {{#with metadataValue ../_id}}
+                {{#if this}}
+                  {{#if ../../url}}
+                    <a href="{{this}}" target="_blank"><i class="icon-arrow-right"></i></a>
+                  {{else}}
+                    <strong>{{this}}</strong>
+                  {{/if}}
+                {{/if}}
+              {{/with}}
+            </td>
+          {{/each}}
         </tr>
       {{/each}}
     </table>

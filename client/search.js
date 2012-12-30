@@ -111,3 +111,11 @@ Template.searchPage.familyValue = function (puzzleId) {
     return '';
   return Meteor._get(puzzle, 'families', this._id);
 };
+
+// 'this' is a PuzzleMetadata object
+Template.searchPage.metadataValue = function (puzzleId) {
+  var puzzle = Puzzles.findOne(puzzleId);
+  if (!puzzle)
+    return '';
+  return Meteor._get(puzzle, 'metadata', this._id);
+};

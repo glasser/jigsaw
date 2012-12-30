@@ -61,6 +61,7 @@ PuzzleMetadata = newCollection('puzzleMetadata');
 // schema:
 //   name: string
 //   url: bool
+//   showInSearch: bool
 
 if (Meteor.isServer) {
   Jigsaw.publish(null, function () {
@@ -85,6 +86,11 @@ if (Meteor.isServer) {
     // Want to sort in some consistent order; maybe should actually define a
     // sort key or something later.
     return PuzzleMetadata.find({}, {sort: ['name']});
+  });
+  Handlebars.registerHelper("metadataInSearch", function () {
+    // Want to sort in some consistent order; maybe should actually define a
+    // sort key or something later.
+    return PuzzleMetadata.find({showInSearch: true}, {sort: ['name']});
   });
 }
 
