@@ -30,12 +30,6 @@ if (Meteor.isServer) {
   Jigsaw.publish('all-puzzles', function () {
     return Puzzles.find();
   });
-
-  // XXX add add/remove puzzle methods instead
-  Puzzles.allow({
-    insert: function () { return true; },
-    remove: function () { return true; }
-  });
 } else {
   Meteor.subscribe("all-puzzles");
   // Meteor.autosubscribe(function () {
