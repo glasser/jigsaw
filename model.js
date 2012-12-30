@@ -168,7 +168,7 @@ if (Meteor.isServer) {
 Newsfeed = newCollection('newsfeed');
 //  schema:
 //     htmlContent: *HTML* STRING
-//     created (server-side timestamp --- always create via this function)
+//     created (server-side timestamp)
 
 if (Meteor.isServer) {
   Jigsaw.publish(null, function () {
@@ -187,4 +187,27 @@ var createNewsfeed = function (htmlContent) {
 };
 
 // HEADER LINKS
+// display recent things that happened
+HeaderLinks = newCollection('headerLinks');
+//  schema:
+//     text: string
+//     href: string
+//     created (server-side timestamp)
+
+if (Meteor.isServer) {
+  Jigsaw.publish(null, function () {
+    return HeaderLinks.find();
+  });
+
+  // You don't get to update links, and insert is done via method to add
+  // server-side timestamp, but remove is OK.
+  HeaderLinks.allow({
+    remove: function () { return true; }
+  });
+} else {
+  Handlebars.registerHelper("allHeaderLinks", function () {
+    return HeaderLinks.find({}, {sort: {created: 1}});
+  });
+}
+
 // CUSTOM CSS

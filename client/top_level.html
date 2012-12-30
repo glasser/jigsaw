@@ -76,7 +76,9 @@
       <div class="container">
         <a class="brand" href="/">Jigsaw</a>
         <ul class="nav">
-          <li><a href="/foo">Open Puzzles</a></li>
+          {{#each allHeaderLinks}}
+            <li><a href="{{href}}">{{text}}</a></li>
+          {{/each}}
           <li><a href="/admin">Admin</a></li>
         </ul>
       </div>

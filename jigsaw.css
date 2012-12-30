@@ -26,3 +26,6 @@ body {
   background-color: #fcf8e3;
   color: #c09853;
 }
+
+/* glasser is colorblind and wants all links to have underlines */
+:link, :visited { text-decoration: underline ! important }

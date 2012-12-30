@@ -3,6 +3,7 @@
     <h3>Administrivia</h3>
 
     {{> adminBanners}}
+    {{> adminHeaderLinks}}
   {{/if}}
 </template>
 
@@ -26,5 +27,28 @@
     <input class='span5' type='text' id='addBanner' placeholder='new banner'>
     <button class='btn' id='addBannerButton'><i class='icon-plus'></i></button>
   </span>
+  </ul>
+</template>
+
+<template name='adminHeaderLinks'>
+  <h4>Header Links</h4>
+  <table class='table table-striped'>
+    <tr>
+      <th>Text</th>
+      <th>Link</th>
+      <th></th>
+    </tr>
+    {{#each allHeaderLinks}}
+      <tr>
+        <td>{{text}}</td>
+        <td>{{href}}</td>
+        <td><button class='btn removeHeaderLink'><i class='icon-remove'></i></button></td>
+      </tr>
+    {{/each}}
+  </table>
+  <div>
+    <input class='span2 addLink' type='text' id='addLinkText' placeholder='new link text' />
+    <input class='span4 addLink' type='text' class='addLink' id='addLinkHref' placeholder='new link URL' />
+  </div>
   </ul>
 </template>
