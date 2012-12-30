@@ -47,6 +47,11 @@ var tagStringToArray = function (tagString) {
   return _.uniq(lowerCaseTags);
 };
 
+// used in newsfeeds, etc
+var puzzleLink = function (puzzleId, text) {
+  return '<a href="/puzzle/' + puzzleId + '">' + text + '</a>';
+};
+
 // puzzle queries need sorts (which was weird in AE), tags, negative tags,
 // metadata to show. families were like tags. also, by default we filter out
 // 'deleted'
@@ -130,7 +135,7 @@ if (Meteor.isServer) {
 
 
 // BANNERS
-// manually set banners that go on every page
+// manually-set banners that go on every page
 Banners = newCollection('banners');
 //  schema:
 //     content
@@ -148,18 +153,32 @@ if (Meteor.isServer) {
   });
 } else {
   Handlebars.registerHelper("allBanners", function () {
-    // Want to sort in some consistent order; maybe should actually define a
-    // sort key or something later.
     return Banners.find({}, {sort: {created: -1}});
   });
 }
 
 // NEWSFEED
 // display recent things that happened
-
+Newsfeed = newCollection('newsfeed');
 //  schema:
-//     content
-//     created
+//     htmlContent: *HTML* STRING
+//     created (server-side timestamp --- always create via this function)
+
+if (Meteor.isServer) {
+  Jigsaw.publish(null, function () {
+    return Newsfeed.find({}, {sort: {created: -1}, limit: 10});
+  });
+} else {
+  Handlebars.registerHelper("newsfeed", function () {
+    return Newsfeed.find({}, {sort: {created: -1}});
+  });
+}
+
+// Newsfeeds can only be created via this function. Note that this will fail if
+// called on the client outside of a stub.
+var createNewsfeed = function (htmlContent) {
+  Newsfeed.insert({htmlContent: htmlContent, created: (+new Date)});
+};
 
 // HEADER LINKS
 // CUSTOM CSS

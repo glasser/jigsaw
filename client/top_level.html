@@ -18,14 +18,18 @@
 
       <div class="container">
         <div class="row">
-          {{> userPanel}}
-          {{> banners}}
+          <div class="span10">
+            {{!-- pages --}}
+            {{> puzzlePage}}
+            {{> searchPage}}
+            {{> adminPage}}
+          </div>
+          <div class="span2">
+            {{> userPanel}}
+            {{> banners}}
+            {{> newsfeed}}
+          </div>
         </div>
-
-        {{!-- pages --}}
-        {{> puzzlePage}}
-        {{> searchPage}}
-        {{> adminPage}}
       </div>
     {{else}}
       {{> passwordForm }}
@@ -45,15 +49,17 @@
         {{/unless}}
       {{/if}}
     {{#if showing 'userDirectory'}}
-      <div class='form-inline'>
-        <select id='directory'>
-          {{#each users}}
-            <option {{#if current}}selected{{/if}}>{{username}}</option>
-          {{/each}}
-        </select>
-        or other:
-        <input type='text' id='username-other' autocomplete='off'>
-        <button class='btn btn-primary' id='change-username'>set name</button>
+      <div>
+        <div class='form-inline'>
+          <select id='directory'>
+            {{#each users}}
+              <option {{#if current}}selected{{/if}}>{{username}}</option>
+            {{/each}}
+          </select>
+          or other:
+          <input type='text' id='username-other' autocomplete='off'>
+          <button class='btn btn-primary' id='change-username'>set name</button>
+        </div>
       </div>
     {{/if}}
   </div>
@@ -79,10 +85,20 @@
 </template>
 
 <template name='banners'>
-  <div class="alert alert-info span4">
+  <div class="banners span4">
     <ul>
       {{#each allBanners}}
-      <li><em>[{{huntTime created}}]</em> {{content}}</li>
+        <li><em>[{{huntTime created}}]</em> {{content}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name='newsfeed'>
+  <div class="newsfeed span4">
+    <ul>
+      {{#each newsfeed}}
+        <li><em>[{{huntTime created}}]</em> {{{htmlContent}}}</li>
       {{/each}}
     </ul>
   </div>
