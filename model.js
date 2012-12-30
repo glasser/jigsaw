@@ -49,7 +49,7 @@ var tagStringToArray = function (tagString) {
 
 // used in newsfeeds, etc
 var puzzleLink = function (puzzleId, text) {
-  return '<a href="/puzzle/' + puzzleId + '">' + text + '</a>';
+  return '<a href="/puzzle/' + puzzleId + '">' + _.escape(text) + '</a>';
 };
 
 // puzzle queries need sorts (which was weird in AE), tags, negative tags,
