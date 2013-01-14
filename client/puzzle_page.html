@@ -135,8 +135,7 @@
       <li class="comment-priority-{{ priority }}">
         by {{ author }} at {{ huntTime created }} [{{ priority }}]
         {{! XXX edit priority }}
-        <pre>{{ text }}</pre>
-        {{! XXX urlize text }}
+        <pre>{{#linkify}}{{ text }}{{/linkify}}</pre>
         {{! XXX edit comment }}
       </li>
     {{/each}}
