@@ -34,3 +34,9 @@ Template.adminHeaderLinks.events(okCancelEvents(
       Meteor.call('createHeaderLink', textInput.value, hrefInput.value);
       textInput.value = hrefInput.value = '';
     }}));
+
+Template.adminHeaderLinks.events({
+  'click .removeHeaderLink': function () {
+    HeaderLinks.remove(this._id);
+  }
+});
