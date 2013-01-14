@@ -138,6 +138,7 @@ Comments = newCollection('comments');
 //    author
 //    text
 //    priority: important, normal, useless
+var COMMENT_PRIORITIES = ['important', 'normal', 'useless'];
 if (Meteor.isServer) {
   // XXX Need to make a supported way of calling this.
   Comments._ensureIndex('puzzleId');

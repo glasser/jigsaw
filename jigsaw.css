@@ -28,8 +28,37 @@ body {
 }
 
 /* font family from bootstrap's code/pre */
-textarea.monospace {
+.monospace {
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+
+.comment-priority-important .comment-body {
+  background-color: yellow;
+}
+.comment-priority-normal .comment-body {
+  background-color: #eedfcc;
+}
+.comment-priority-useless .comment-body {
+  background-color: grey;
+  color: white;
+}
+
+
+.comment {
+  margin: 10px 0;
+}
+
+.comment-header {
+  background-color: white;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.comment-body {
+  padding: 4px;
+  white-space: pre-wrap;
 }
 
 /* glasser is colorblind and wants all links to have underlines */

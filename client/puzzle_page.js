@@ -156,19 +156,20 @@ Template.comments.comments = function () {
   var puzzleId = JigsawRouter.currentPuzzleId();
   if (!puzzleId)
     return null;
-  // XXX sort
-  return Comments.find({puzzleId: puzzleId});
+  // priorities are in alphabetical order of uselessness.
+  return Comments.find({puzzleId: puzzleId},
+                       {sort: {priority: 1, created: -1}});
 };
 
 Template.comments.maybeSelected = function (commentId) {
-  var comment = Comments.find(commentId);
+  var comment = Comments.findOne(commentId);
   if (!comment)
     return '';
   return comment.priority === this.toString() ? 'selected' : '';
 };
 
 Template.comments.priorities = function () {
-  return ['important', 'normal', 'useless'];
+  return COMMENT_PRIORITIES;
 };
 
 Template.comments.events({
@@ -183,5 +184,13 @@ Template.comments.events({
       if (result)
         textarea.value = '';
     });
+  },
+  'change .setPriority': function (event, template) {
+    var commentId = this._id;
+    if (!commentId)
+      return;
+    Meteor.call('setPriority', commentId,
+                DomUtils.getElementValue(event.target));
+    reactivelyShow(this._id, false);
   }
 });

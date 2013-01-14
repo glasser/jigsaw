@@ -130,35 +130,37 @@
 
 <template name='comments'>
   <h4>Comments</h4>
-  <ul>
-    {{#each comments}}
-      <li class="comment-priority-{{ priority }}">
-        by {{ author }} at {{ huntTime created }}
-        <div class="form-inline">
-          {{#show section=_id useEditButton=true}}
-            <select id="priority-{{_id}}" class="setPriority focus-{{_id}}">
-              {{#each priorities}}
-                <option {{maybeSelected ../_id}}>{{this}}</option>
-              {{/each}}
-            </select>
-          {{else}}
-            [{{ priority }}]
-          {{/show}}
+  {{#each comments}}
+
+      <div class="comment comment-priority-{{ priority }}">
+        <div class="comment-header">
+          by {{ author }} at {{ huntTime created }}
+          <div class="form-inline">
+            {{#show section=_id useEditButton=true}}
+              <select id="priority-{{_id}}" class="setPriority focus-{{_id}}">
+                {{#each priorities}}
+                  <option {{maybeSelected ../../_id}}>{{this}}</option>
+                {{/each}}
+              </select>
+            {{else}}
+              [{{ priority }}]
+            {{/show}}
+          </div>
         </div>
-        <pre>{{#linkify}}{{ text }}{{/linkify}}</pre>
+        <div class="comment-body monospace">{{#linkify}}{{ text }}{{/linkify}}</div>
         {{! XXX edit comment }}
-      </li>
-    {{/each}}
-    <li>
-      {{#if isNobody}}
-        [log in at the top of the page to post a new comment]
-      {{else}}
-        Post a new comment (as {{currentUser.username}}):
-        <div class="form">
-          <textarea id="add-comment-text" class="input-block-level monospace" rows="20"></textarea>
-          <input id="add-comment-button" type="submit" value="add comment">
-        </div>
-      {{/if}}
-    </li>
-  </ul>
+      </div>
+
+  {{/each}}
+  <div>
+    {{#if isNobody}}
+      [log in at the top of the page to post a new comment]
+    {{else}}
+      Post a new comment (as {{currentUser.username}}):
+      <div class="form">
+        <textarea id="add-comment-text" class="input-block-level monospace" rows="20"></textarea>
+        <input id="add-comment-button" type="submit" value="add comment">
+      </div>
+    {{/if}}
+  </div>
 </template>
