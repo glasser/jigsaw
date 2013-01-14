@@ -149,3 +149,27 @@ Meteor.setInterval(function () {
 Template.spreadsheets.autoRefresh = function () {
   spreadsheetRefreshSet.addCurrentContext();
 };
+
+
+// COMMENTS
+Template.comments.comments = function () {
+  var puzzleId = JigsawRouter.currentPuzzleId();
+  if (!puzzleId)
+    return null;
+  return Comments.find({puzzleId: puzzleId});
+};
+
+Template.comments.events({
+  'click #add-comment-button': function (event, template) {
+    var textarea = template.find('#add-comment-text');
+    if (!textarea)
+      return;
+    var text = textarea.value;
+    Meteor.call('createComment', JigsawRouter.currentPuzzleId(), text, function (err, result) {
+      if (err)
+        throw err;
+      if (result)
+        textarea.value = '';
+    });
+  }
+});

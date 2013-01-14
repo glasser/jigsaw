@@ -12,7 +12,9 @@
          </div>
          {{> spreadsheets }}
          {{! XXX related queries }}
-         {{! XXX comments }}
+
+         {{> comments }}
+
          {{! XXX images }}
       {{/with}}
     {{else}}
@@ -124,4 +126,30 @@
     <input type='text' id='addSpreadsheet' placeholder='spreadsheet name'/>
     <button class='btn' id='addSpreadsheetButton'><i class='icon-plus'></i></button>
   </span>
+</template>
+
+<template name='comments'>
+  <h4>Comments</h4>
+  <ul>
+    {{#each comments}}
+      <li class="comment-priority-{{ priority }}">
+        by {{ author }} at {{ huntTime created }} [{{ priority }}]
+        {{! XXX edit priority }}
+        <pre>{{ text }}</pre>
+        {{! XXX urlize text }}
+        {{! XXX edit comment }}
+      </li>
+    {{/each}}
+    <li>
+      {{#if isNobody}}
+        [log in at the top of the page to post a new comment]
+      {{else}}
+        Post a new comment (as {{currentUser.username}}):
+        <div class="form">
+          <textarea id="add-comment-text" class="input-block-level" rows="20"></textarea>
+          <input id="add-comment-button" type="submit" value="add comment">
+        </div>
+      {{/if}}
+    </li>
+  </ul>
 </template>

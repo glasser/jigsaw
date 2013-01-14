@@ -92,9 +92,9 @@ if (Meteor.isServer) {
   Template.userPanel.current = function () {
     return Meteor.user() && this.username === Meteor.user().username;
   };
-  Template.userPanel.isNobody = function () {
+  Handlebars.registerHelper("isNobody", function () {
     return Meteor.user().username === 'nobody';
-  };
+  });
   Template.userPanel.events({
     'click #show-change-username': function () {
       reactivelyShow('userDirectory', true);

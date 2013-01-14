@@ -130,15 +130,48 @@ if (Meteor.isServer) {
 }
 
 // COMMENTS
-
+Comments = newCollection('comments');
 // schema:
 //    puzzleId
-//    replacedBy (for versioning)
+//    replacedBy (for versioning)  [XXX not yet supported]
 //    created date
 //    author
 //    text
 //    priority: important, normal, useless
+if (Meteor.isServer) {
+  // XXX Need to make a supported way of calling this.
+  Comments._ensureIndex('puzzleId');
+  Jigsaw.publish('comments-by-puzzle', function (puzzleId) {
+    return Comments.find({puzzleId: puzzleId});
+  });
+} else {
+  Meteor.autosubscribe(function () {
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (puzzleId)
+      Meteor.subscribe('comments-by-puzzle', puzzleId);
+  });
+}
 
+// Comments can only be created via this function. Note that this will fail if
+// called on the client outside of a stub. Returns true if a comment was
+// created.
+var createComment = function (puzzleId, text) {
+  if (!(/\S/.test(text)))
+    return false;
+  if (text.substr(text.length - 1) !== '\n')
+    text = text + '\n';
+  var author = Meteor.user().username;
+  if (!author)
+    return false;
+  if (!puzzleId)
+    return false;
+  Comments.insert({puzzleId: puzzleId,
+                   created: +(new Date),
+                   author: author,
+                   text: text,
+                   priority: 'normal'});
+  return true;
+};
 
 // BANNERS
 // manually-set banners that go on every page
@@ -211,3 +244,4 @@ if (Meteor.isServer) {
 }
 
 // CUSTOM CSS
+// XXX
