@@ -27,5 +27,10 @@ body {
   color: #c09853;
 }
 
+/* font family from bootstrap's code/pre */
+textarea.monospace {
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+
 /* glasser is colorblind and wants all links to have underlines */
 :link, :visited { text-decoration: underline ! important }

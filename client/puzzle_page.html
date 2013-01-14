@@ -133,8 +133,18 @@
   <ul>
     {{#each comments}}
       <li class="comment-priority-{{ priority }}">
-        by {{ author }} at {{ huntTime created }} [{{ priority }}]
-        {{! XXX edit priority }}
+        by {{ author }} at {{ huntTime created }}
+        <div class="form-inline">
+          {{#show section=_id useEditButton=true}}
+            <select id="priority-{{_id}}" class="setPriority focus-{{_id}}">
+              {{#each priorities}}
+                <option {{maybeSelected ../_id}}>{{this}}</option>
+              {{/each}}
+            </select>
+          {{else}}
+            [{{ priority }}]
+          {{/show}}
+        </div>
         <pre>{{#linkify}}{{ text }}{{/linkify}}</pre>
         {{! XXX edit comment }}
       </li>
@@ -145,7 +155,7 @@
       {{else}}
         Post a new comment (as {{currentUser.username}}):
         <div class="form">
-          <textarea id="add-comment-text" class="input-block-level" rows="20"></textarea>
+          <textarea id="add-comment-text" class="input-block-level monospace" rows="20"></textarea>
           <input id="add-comment-button" type="submit" value="add comment">
         </div>
       {{/if}}

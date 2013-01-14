@@ -156,7 +156,19 @@ Template.comments.comments = function () {
   var puzzleId = JigsawRouter.currentPuzzleId();
   if (!puzzleId)
     return null;
+  // XXX sort
   return Comments.find({puzzleId: puzzleId});
+};
+
+Template.comments.maybeSelected = function (commentId) {
+  var comment = Comments.find(commentId);
+  if (!comment)
+    return '';
+  return comment.priority === this.toString() ? 'selected' : '';
+};
+
+Template.comments.priorities = function () {
+  return ['important', 'normal', 'useless'];
 };
 
 Template.comments.events({
