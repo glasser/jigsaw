@@ -77,8 +77,8 @@ if (Meteor.isServer) {
 
   // Initial data!
   if (PuzzleMetadata.find().count() === 0) {
-    PuzzleMetadata.insert({name: "Puzzle URL", url: true});
-    PuzzleMetadata.insert({name: "Answer"});
+    PuzzleMetadata.insert({name: "Puzzle URL", url: true, showInSearch: true});
+    PuzzleMetadata.insert({name: "Answer", showInSearch: true});
     PuzzleMetadata.insert({name: "Wrong answers"});
   }
 } else {
@@ -173,6 +173,75 @@ var createComment = function (puzzleId, text) {
                    priority: 'normal'});
   return true;
 };
+
+// UPLOADS
+Uploads = newCollection('uploads');
+// schema:
+//    puzzleId
+//    filepicker (the filepicker.io data)
+//      url (to filepicker.io)
+//      filename
+//      mimetype
+//      size
+//      isWritable
+//      key (in s3)
+//    created date
+//    author
+if (Meteor.isServer) {
+  // XXX Need to make a supported way of calling this.
+  Uploads._ensureIndex('puzzleId');
+  Jigsaw.publish('uploads-by-puzzle', function (puzzleId) {
+    return Uploads.find({puzzleId: puzzleId});
+  });
+} else {
+  Meteor.autosubscribe(function () {
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (puzzleId)
+      Meteor.subscribe('uploads-by-puzzle', puzzleId);
+  });
+}
+
+// Comments can only be created via this function. Note that this will fail if
+// called on the client outside of a stub. Returns true if a comment was
+// created.
+var createUpload = function (puzzleId, filepicker) {
+  var author = Meteor.user().username;
+  if (!author)
+    return false;
+  if (!puzzleId)
+    return false;
+  Uploads.insert({puzzleId: puzzleId,
+                  created: +(new Date),
+                  author: author,
+                  filepicker: filepicker});
+  return true;
+};
+
+// Upload config.
+if (Meteor.isServer) {
+  // does NOT use Jigsaw.publish
+  Meteor.publish("upload-config", function () {
+    if (this.userId) {
+      this.added('UploadConfig', 'singleton',
+                 Meteor.settings.publicUploadConfig);
+      this.complete();
+    } else {
+      // leave incomplete until after login!
+    }
+    return null;
+  });
+} else {
+  var uploadConfigCollection = new Meteor.Collection("UploadConfig");
+  var UPLOAD_CONFIG = {};
+  Meteor.subscribe("upload-config", function () {
+    var config = uploadConfigCollection.findOne();
+    if (config) {
+      UPLOAD_CONFIG = config;
+      filepicker.setKey(UPLOAD_CONFIG.filepickerKey);
+    }
+  });
+}
+
 
 // BANNERS
 // manually-set banners that go on every page

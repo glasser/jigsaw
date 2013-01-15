@@ -1,0 +1,38 @@
+note: the implementation of UPLOAD_CONFIG implies that we are on the ddp-pre1
+branch of meteor.
+
+- create filepicker account
+- create S3 bucket
+
+- in amazon IAM, create a new user (whose key/secret is put in the filepicker app setup) with policy
+{
+    "Statement": [
+        {
+            "Sid": "AllowPublicRead",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::net.davidglasser.robopop.filepicker/*"
+            ]
+        }
+    ]
+}
+
+
+- in s3, set this as a bucket security policy (allows public reads, given a hopefully-unguessable key)
+{
+    "Statement": [
+        {
+               "Sid": "AllowPublicRead",
+               "Effect": "Allow",
+                "Principal": {
+                        "AWS": "*"
+                },
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::NAME_OF_BUCKET_HERE/*"
+        }
+    ]
+}

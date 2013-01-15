@@ -194,3 +194,27 @@ Template.comments.events({
     reactivelyShow(this._id, false);
   }
 });
+
+
+
+// UPLOADS
+Template.uploads.uploads = function () {
+  var puzzleId = JigsawRouter.currentPuzzleId();
+  if (!puzzleId)
+    return null;
+  return Uploads.find({puzzleId: puzzleId}, {sort: {created: -1}});
+};
+
+Template.uploads.bucket = function () {
+  return UPLOAD_CONFIG.s3bucket;
+};
+
+Template.uploads.events({
+  'click #upload-button': function () {
+    filepicker.pickAndStore({multiple: true}, {location: 'S3'}, function (fpfiles) {
+      _.each(fpfiles, function (fpfile) {
+        Meteor.call('createUpload', JigsawRouter.currentPuzzleId(), fpfile);
+      });
+    });
+  }
+});

@@ -15,7 +15,7 @@
 
          {{> comments }}
 
-         {{! XXX images }}
+         {{> uploads}}
       {{/with}}
     {{else}}
       <h3>No such puzzle</h3>
@@ -159,8 +159,25 @@
       Post a new comment (as {{currentUser.username}}):
       <div class="form">
         <textarea id="add-comment-text" class="input-block-level monospace" rows="20"></textarea>
-        <input id="add-comment-button" type="submit" value="add comment">
+        <input id="add-comment-button" type="submit" class="btn" value="add comment">
       </div>
+    {{/if}}
+  </div>
+</template>
+
+<template name='uploads'>
+  <h4>Uploads</h4>
+  <ul>
+    {{#each uploads}}
+      <li><a href="https://s3.amazonaws.com/{{ bucket }}/{{ filepicker.key }}" target="_blank"
+             >{{ filepicker.filename }}</a> by {{ author }} at {{ huntTime created }}</li>
+    {{/each}}
+  </ul>
+  <div>
+    {{#if isNobody}}
+      [log in at the top of the page to upload a file]
+    {{else}}
+      <input id="upload-button" type="submit" class="btn" value="upload a file"> (as {{ currentUser.username }})
     {{/if}}
   </div>
 </template>
