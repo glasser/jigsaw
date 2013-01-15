@@ -5,6 +5,9 @@ body {
   display: inline;
 }
 
+div.container {
+  width: 98%;
+}
 
 .mask {
   position: absolute;
