@@ -18,13 +18,13 @@
 
       <div class="container">
         <div class="row">
-          <div class="span10">
+          <div class="span9">
             {{!-- pages --}}
             {{> puzzlePage}}
             {{> searchPage}}
             {{> adminPage}}
           </div>
-          <div class="span2">
+          <div class="span3">
             {{> userPanel}}
             {{> banners}}
             {{> newsfeed}}
@@ -38,7 +38,7 @@
 </template>
 
 <template name='userPanel'>
-  <div class="span4">
+  <div class="span3">
       You are:
       {{#if isNobody}}
         nobody. Please log in:
@@ -87,7 +87,7 @@
 </template>
 
 <template name='banners'>
-  <div class="banners span4">
+  <div class="banners span3">
     <ul>
       {{#each allBanners}}
         <li><em>[{{huntTime created}}]</em> {{content}}</li>
@@ -97,7 +97,7 @@
 </template>
 
 <template name='newsfeed'>
-  <div class="newsfeed span4">
+  <div class="newsfeed span3">
     <ul>
       {{#each newsfeed}}
         <li><em>[{{huntTime created}}]</em> {{{htmlContent}}}</li>
