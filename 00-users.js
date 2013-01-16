@@ -52,6 +52,10 @@ if (Meteor.isServer) {
       throw new Meteor.Error('Wrong password!');
     return logInAsUsername('nobody');
   });
+
+  Meteor.Facts.setUserIdFilter(function (userId) {
+    return !!userId;
+  });
 } else {
   Meteor.subscribe("directory");
 
@@ -114,4 +118,8 @@ if (Meteor.isServer) {
         Jigsaw.logInWithGlobalPassword(event.target.value);
     }
   });
+
+  Template.body.showFacts = function () {
+    return Session.get('showFacts');
+  };
 }

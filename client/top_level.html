@@ -29,6 +29,11 @@
             {{> banners}}
             {{> newsfeed}}
           </div>
+          {{#if showFacts}}
+            <div class="span3">
+              {{> serverFacts }}
+            </div>
+          {{/if}}
         </div>
       </div>
     {{else}}
