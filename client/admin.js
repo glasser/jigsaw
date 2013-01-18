@@ -82,3 +82,13 @@ Template.adminFamilies.events({
     Families.update(id, {$set: {default: this.toString()}});
   }
 });
+
+Template.adminFamilies.events(okCancelEvents(
+  '.addFamilyValue', {
+    ok: function (event, template, value, input) {
+      if (!value)
+        return;
+      Families.update(this._id, {$addToSet: {values: value}})
+      input.value = '';
+      Meteor.flush();
+    }}));
