@@ -14,6 +14,10 @@ body.status-solved {
   background-color: #66ccff;
 }
 
+body.tag-deleted {
+  background-color: red;
+}
+
 .mask {
   position: absolute;
   width: 100%;

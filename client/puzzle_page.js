@@ -14,7 +14,10 @@ Meteor.startup(function () {
     var puzzle = JigsawRouter.currentPuzzle();
     if (puzzle && puzzle.title)
       document.title = "Puzzle: " + puzzle.title;
-    if (currentPuzzleFamilyValue('Status') === 'Solved')
+
+    if (puzzle && _.contains(puzzle.tags, 'deleted'))
+      document.body.className = 'tag-deleted';
+    else if (currentPuzzleFamilyValue('Status') === 'Solved')
       document.body.className = 'status-solved';
     else
       document.body.className = '';
@@ -70,7 +73,7 @@ Template.tagList.events({
   'click .removeTag': function (event, template) {
     var puzzleId = JigsawRouter.currentPuzzleId();
     if (puzzleId)
-      Meteor.call('removeTag', puzzleId, this);
+      Meteor.call('removeTag', puzzleId, this.toString());
   },
   'click #addTagsButton': function (event, template) {
     var addTagsInput = template.find('#addTags');
