@@ -177,6 +177,7 @@ var createComment = function (puzzleId, text) {
   Comments.insert({puzzleId: puzzleId,
                    created: +(new Date),
                    author: author,
+                   originalAuthor: author,
                    text: text,
                    version: 1,
                    priority: 'normal'});

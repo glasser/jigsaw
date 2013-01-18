@@ -171,7 +171,8 @@ Template.comments.helpers({
     return COMMENT_PRIORITIES;
   },
   editing: function () {
-    return Session.get('commentEditor.show.' + this._id);
+    return Meteor.user().username !== 'nobody' &&
+      Session.get('commentEditor.show.' + this._id);
   },
   originalText: function () {
     return Session.get('commentEditor.text.' + this._id);

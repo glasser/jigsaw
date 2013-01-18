@@ -134,14 +134,16 @@
 
       <div class="comment comment-priority-{{ priority }}">
         <div class="comment-header">
-          {{#if editing}}
-            <button class='btn cancelEditComment'><i class='icon-ban-circle'></i></button>
-          {{else}}
-            <button class='btn editComment'><i class='icon-pencil'></i></button>
-          {{/if}}
+          {{#unless isNobody}}
+            {{#if editing}}
+              <button class='btn cancelEditComment'><i class='icon-ban-circle'></i></button>
+            {{else}}
+              <button class='btn editComment'><i class='icon-pencil'></i></button>
+            {{/if}}
+          {{/unless}}
           by {{ author }}
           {{#if updated}}
-            at {{ huntTime updated }} (originally at {{huntTime created}})
+            at {{ huntTime updated }} (originally at {{ huntTime created }} by {{ originalAuthor }})
           {{else}}
             at {{ huntTime created }}
           {{/if}}
