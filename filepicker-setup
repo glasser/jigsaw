@@ -1,4 +1,4 @@
-note: the implementation of UPLOAD_CONFIG implies that we are on the ddp-pre1
+note: the implementation of PUBLIC_CONFIG implies that we are on the ddp-pre1
 branch of meteor.
 
 - create filepicker account

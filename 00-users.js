@@ -122,4 +122,8 @@ if (Meteor.isServer) {
   Template.body.showFacts = function () {
     return Session.get('showFacts');
   };
+
+  Template.navbar.siteTitle = function () {
+    return getPublicConfig('siteTitle') || 'Jigsaw';
+  };
 }

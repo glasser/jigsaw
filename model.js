@@ -230,10 +230,10 @@ var createUpload = function (puzzleId, filepicker) {
 // Upload config.
 if (Meteor.isServer) {
   // does NOT use Jigsaw.publish
-  Meteor.publish("upload-config", function () {
+  Meteor.publish("public-config", function () {
     if (this.userId) {
-      this.added('UploadConfig', 'singleton',
-                 Meteor.settings.publicUploadConfig);
+      this.added('PublicConfig', 'singleton',
+                 Meteor.settings.publicConfig);
       this.complete();
     } else {
       // leave incomplete until after login!
@@ -241,13 +241,15 @@ if (Meteor.isServer) {
     return null;
   });
 } else {
-  var uploadConfigCollection = new Meteor.Collection("UploadConfig");
-  var UPLOAD_CONFIG = {};
-  Meteor.subscribe("upload-config", function () {
-    var config = uploadConfigCollection.findOne();
-    if (config) {
-      UPLOAD_CONFIG = config;
-      filepicker.setKey(UPLOAD_CONFIG.filepickerKey);
+  var publicConfigCollection = new Meteor.Collection("PublicConfig");
+  var getPublicConfig = function (name) {
+    var config = publicConfigCollection.findOne();
+    return config && config[name];
+  };
+  Meteor.subscribe("public-config", function () {
+    var filepickerKey = getPublicConfig("filepickerKey");
+    if (filepickerKey) {
+      filepicker.setKey(filepickerKey);
     }
   });
 }

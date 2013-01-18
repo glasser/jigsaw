@@ -316,7 +316,7 @@ Template.uploads.uploads = function () {
 };
 
 Template.uploads.bucket = function () {
-  return UPLOAD_CONFIG.s3bucket;
+  return getPublicConfig('s3bucket');
 };
 
 Template.uploads.events({
