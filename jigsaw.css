@@ -41,6 +41,11 @@ body.tag-deleted {
   padding: 3px;
 }
 
+.recent {
+  background-color: #66FFCC;
+  padding: 3px;
+}
+
 /* font family from bootstrap's code/pre */
 .monospace {
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;

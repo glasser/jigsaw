@@ -28,6 +28,7 @@
             {{> userPanel}}
             {{> banners}}
             {{> newsfeed}}
+            {{> recent}}
             {{#if showFacts}}
               <div>
                 {{> serverFacts }}
@@ -106,6 +107,17 @@
     <ul>
       {{#each newsfeed}}
         <li><em>[{{huntTime created}}]</em> {{{htmlContent}}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name='recent'>
+  <div class="recent span3">
+    <h5>Unsolved puzzles, active first</h5>
+    <ul>
+      {{#each activePuzzles}}
+        <li><a href="/puzzle/{{_id}}">{{title}}</a></li>
       {{/each}}
     </ul>
   </div>

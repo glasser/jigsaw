@@ -104,6 +104,7 @@ Jigsaw.methods({
                                       {docId: sheetDoc.id,
                                        link: sheetDoc.alternateLink,
                                        embedLink: sheetDoc.embedLink}}});
+    pingPuzzle(puzzleId);
   }
 });
 })();

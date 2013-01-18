@@ -126,4 +126,13 @@ if (Meteor.isServer) {
   Template.navbar.siteTitle = function () {
     return getPublicConfig('siteTitle') || 'Jigsaw';
   };
+
+  Template.recent.activePuzzles = function () {
+    var statusFamily = Families.findOne({name: 'Status'});
+    if (!statusFamily)
+      return [];
+    var query = {};
+    query['families.' + statusFamily._id] = {$ne: 'Solved'};
+    return Puzzles.find(query, {sort: {pinged: -1}});
+  };
 }
