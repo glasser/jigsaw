@@ -6,11 +6,15 @@
       <tr>
         <th>Puzzle</th>
         {{#each allFamilies}}
-          <th>{{name}}</th>
+          <th>
+            {{> searchColumnHeader }}
+          </th>
         {{/each}}
         <th>Tags</th>
         {{#each metadataInSearch}}
-          <th>{{name}}</th>
+          <th>
+            {{> searchColumnHeader }}
+          </th>
         {{/each}}
       </tr>
       {{#each search}}
@@ -48,5 +52,15 @@
         </tr>
       {{/each}}
     </table>
+  {{/if}}
+</template>
+
+<template name='searchColumnHeader'>
+  <div>{{name}}</div>
+  {{#if showUp}}
+    <a href="{{resortedSearch false}}" class='btn sortUp'><i class="icon-arrow-up"></i></a>
+  {{/if}}
+  {{#if showDown}}
+    <a href="{{resortedSearch true}}" class='btn sortDown'><i class="icon-arrow-down"></i></a>
   {{/if}}
 </template>

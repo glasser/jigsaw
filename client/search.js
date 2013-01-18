@@ -149,3 +149,34 @@ Template.searchPage.metadataValue = function (puzzleId) {
     return '';
   return Meteor._get(puzzle, 'metadata', this._id);
 };
+
+// Show up arrow, unless already sorting up by this key.
+Template.searchColumnHeader.showUp = function () {
+  var context = this;
+  var show = true;
+  eachQueryPiece(JigsawRouter.currentSearchQueryUrl(), function (command, arg, negate) {
+    if (command === 'sort' && arg === context.name && !negate)
+      show = false;
+  });
+  return show;
+};
+
+// Show down arrow only if currently sorting up by this key.
+Template.searchColumnHeader.showDown = function () {
+  return !Template.searchColumnHeader.showUp.apply(this);
+};
+
+// A link to the current search page, sorted only by this.name.
+Template.searchColumnHeader.resortedSearch = function (descending) {
+  descending = JSON.parse(descending);
+  var pieces = ['', 'search'];
+  eachQueryPiece(JigsawRouter.currentSearchQueryUrl(), function (command, arg, negate) {
+    if (command === 'sort')
+      return;
+    if (command === 'tag' && arg === 'deleted' && negate)
+      return;  // implicit
+    pieces.push([negate ? '-' : '', command, '=', arg].join(''));
+  });
+  pieces.push([descending ? '-' : '', 'sort=', this.name].join(''));
+  return pieces.join('/');
+};
