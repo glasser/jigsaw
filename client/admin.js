@@ -61,11 +61,11 @@ Template.adminPuzzleMetadata.events(addButtonEvents(
 
 Template.adminPuzzleMetadata.events({
   'change .puzzleMetadataUrlCheckbox': function (event) {
-    PuzzleMetadata.update(this._id, {$set: {url: event.target.checked}});
+    PuzzleMetadata.update(this._id, {$set: {url: event.currentTarget.checked}});
   },
   'change .puzzleMetadataShowInSearchCheckbox': function (event) {
     PuzzleMetadata.update(this._id,
-                          {$set: {showInSearch: event.target.checked}});
+                          {$set: {showInSearch: event.currentTarget.checked}});
   }
 });
 
@@ -74,12 +74,20 @@ Template.adminFamilies.events({
     event.preventDefault();
     Families.update(this._id, {$unset: {default: 1}});
   },
-  'click .setFamilyDefault': function (event, template) {
+  'click .setFamilyDefault': function (event) {
     event.preventDefault();
-    var id = event.target.getAttribute('data-id');
+    var id = event.currentTarget.getAttribute('data-id');
     if (!id)
       return;
     Families.update(id, {$set: {default: this.toString()}});
+  },
+  'click .removeFamilyValue': function (event) {
+    event.preventDefault();
+    var id = event.currentTarget.getAttribute('data-id');
+    if (!id)
+      return;
+    debugger;
+    Families.update(id, {$pull: {values: this.toString()}});
   }
 });
 
@@ -88,7 +96,6 @@ Template.adminFamilies.events(okCancelEvents(
     ok: function (event, template, value, input) {
       if (!value)
         return;
-      Families.update(this._id, {$addToSet: {values: value}})
-      input.value = '';
-      Meteor.flush();
+      Families.update(this._id, {$addToSet: {values: value}});
+      input.value = '';  // input has id so will be preserved (and focused!)
     }}));

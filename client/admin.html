@@ -64,6 +64,7 @@
         <ul>
           {{#each values}}
             <li>{{ this }}
+              <button class='btn removeFamilyValue' data-id="{{../_id}}"><i class='icon-remove'></i></button>
               {{#if equal this ../default}}
                 <em>[default]</em>
               {{else}}
@@ -71,7 +72,7 @@
               {{/if}}
             </li>
           {{/each}}
-          <li><input type="text" class="addFamilyValue" placeholder="new value"></li>
+          <li><input id="newFamilyValue-{{_id}}" type="text" class="addFamilyValue" placeholder="new value"></li>
         </ul>
       </li>
     {{/each}}
