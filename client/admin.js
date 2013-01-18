@@ -91,6 +91,14 @@ Template.adminFamilies.events({
   }
 });
 
+Template.adminFamilies.events(addButtonEvents(
+  '#addFamily', '#addFamilyButton', function (event, template, contents, input) {
+    if (contents)
+      Families.insert({name: contents, values: []});
+    if (input)
+      input.value = '';
+  }));
+
 Template.adminFamilies.events(okCancelEvents(
   '.addFamilyValue', {
     ok: function (event, template, value, input) {
