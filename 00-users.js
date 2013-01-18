@@ -131,7 +131,7 @@ if (Meteor.isServer) {
     var statusFamily = Families.findOne({name: 'Status'});
     if (!statusFamily)
       return [];
-    var query = {};
+    var query = {tags: {$nin: ['deleted']}};
     query['families.' + statusFamily._id] = {$ne: 'Solved'};
     return Puzzles.find(query, {sort: {pinged: -1}});
   };
