@@ -40,3 +40,31 @@ Template.adminHeaderLinks.events({
     HeaderLinks.remove(this._id);
   }
 });
+
+
+Template.adminPuzzleMetadata.helpers({
+  'urlChecked': function () {
+    return this.url ? 'checked' : '';
+  },
+  'showInSearchChecked': function () {
+    return this.showInSearch ? 'checked' : '';
+  }
+});
+
+Template.adminPuzzleMetadata.events(addButtonEvents(
+  '#addPuzzleMetadata', '#addPuzzleMetadataButton', function (event, template, contents, input) {
+    if (contents)
+      PuzzleMetadata.insert({name: contents});
+    if (input)
+      input.value = '';
+  }));
+
+Template.adminPuzzleMetadata.events({
+  'change .puzzleMetadataUrlCheckbox': function (event) {
+    PuzzleMetadata.update(this._id, {$set: {url: event.currentTarget.checked}});
+  },
+  'change .puzzleMetadataShowInSearchCheckbox': function (event) {
+    PuzzleMetadata.update(this._id,
+                          {$set: {showInSearch: event.currentTarget.checked}});
+  }
+});
