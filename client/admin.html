@@ -4,6 +4,7 @@
 
     {{> adminBanners}}
     {{> adminHeaderLinks}}
+    {{> adminFamilies}}
     {{> adminPuzzleMetadata}}
   {{/if}}
 </template>
@@ -52,8 +53,36 @@
   </div>
 </template>
 
+<template name='adminFamilies'>
+  <h4>Pop-up Metadata</h4>
+  <ul>
+    {{#each allFamilies}}
+      <li>{{ name }}
+        {{#if default}}
+          <a href="#" class="removeDefault">[clear default]</a>
+        {{/if}}
+        <ul>
+          {{#each values}}
+            <li>{{ this }}
+              {{#if equal this ../default}}
+                <em>[default]</em>
+              {{else}}
+                <a href="#" class="setFamilyDefault" data-id="{{../../_id}}">[make default]</a>
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      </li>
+    {{/each}}
+  </ul>
+  <p>
+    <small>If you know what you're doing, you can delete pop-up metadata via the
+      console. It will be difficult to recreate, though.</small>
+  </p>
+</template>
+
 <template name='adminPuzzleMetadata'>
-  <h4>Puzzle Metadata</h4>
+  <h4>Freeform Metadata</h4>
   <table class='table table-striped'>
     <tr>
       <th>Name</th>
@@ -68,12 +97,12 @@
       </tr>
     {{/each}}
   </table>
-  <span class='input-append'>
+  <div class='input-append'>
     <input class='span5' type='text' id='addPuzzleMetadata' placeholder='new piece of metadata'>
     <button class='btn' id='addPuzzleMetadataButton'><i class='icon-plus'></i></button>
-  </span>
+  </div>
   <p>
-    If you know what you're doing, you can delete puzzle metadata via the
-    console. It will be difficult to recreate, though.
+    <small>If you know what you're doing, you can delete puzzle metadata via the
+      console. It will be difficult to recreate, though.</small>
   </p>
 </template>

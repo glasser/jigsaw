@@ -61,10 +61,24 @@ Template.adminPuzzleMetadata.events(addButtonEvents(
 
 Template.adminPuzzleMetadata.events({
   'change .puzzleMetadataUrlCheckbox': function (event) {
-    PuzzleMetadata.update(this._id, {$set: {url: event.currentTarget.checked}});
+    PuzzleMetadata.update(this._id, {$set: {url: event.target.checked}});
   },
   'change .puzzleMetadataShowInSearchCheckbox': function (event) {
     PuzzleMetadata.update(this._id,
-                          {$set: {showInSearch: event.currentTarget.checked}});
+                          {$set: {showInSearch: event.target.checked}});
+  }
+});
+
+Template.adminFamilies.events({
+  'click .removeDefault': function (event) {
+    event.preventDefault();
+    Families.update(this._id, {$unset: {default: 1}});
+  },
+  'click .setFamilyDefault': function (event, template) {
+    event.preventDefault();
+    var id = event.target.getAttribute('data-id');
+    if (!id)
+      return;
+    Families.update(id, {$set: {default: this.toString()}});
   }
 });
