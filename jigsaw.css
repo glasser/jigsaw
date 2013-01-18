@@ -5,6 +5,14 @@ body {
   display: inline;
 }
 
+/* undo bootstrap settings which prevent setting background color */
+html {
+  background: transparent;
+}
+
+body.status-solved {
+  background-color: #66ccff;
+}
 
 .mask {
   position: absolute;

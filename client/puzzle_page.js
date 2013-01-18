@@ -1,8 +1,23 @@
+var currentPuzzleFamilyValue = function (familyName) {
+  var puzzle = JigsawRouter.currentPuzzle();
+  if (!puzzle)
+    return null;
+  var family = Families.findOne({name: familyName});
+  if (!family)
+    return '';
+  return Meteor._get(puzzle, 'families', family._id);
+};
+
+
 Meteor.startup(function () {
   Meteor.autorun(function () {
     var puzzle = JigsawRouter.currentPuzzle();
     if (puzzle && puzzle.title)
       document.title = "Puzzle: " + puzzle.title;
+    if (currentPuzzleFamilyValue('Status') === 'Solved')
+      document.body.className = 'status-solved';
+    else
+      document.body.className = '';
   });
 });
 

@@ -28,12 +28,12 @@
             {{> userPanel}}
             {{> banners}}
             {{> newsfeed}}
+            {{#if showFacts}}
+              <div>
+                {{> serverFacts }}
+              </div>
+            {{/if}}
           </div>
-          {{#if showFacts}}
-            <div class="span3">
-              {{> serverFacts }}
-            </div>
-          {{/if}}
         </div>
       </div>
     {{else}}
