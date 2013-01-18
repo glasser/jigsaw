@@ -152,25 +152,32 @@ Template.spreadsheets.autoRefresh = function () {
 
 
 // COMMENTS
-Template.comments.comments = function () {
-  var puzzleId = JigsawRouter.currentPuzzleId();
-  if (!puzzleId)
-    return null;
-  // priorities are in alphabetical order of uselessness.
-  return Comments.find({puzzleId: puzzleId},
-                       {sort: {priority: 1, created: -1}});
-};
+Template.comments.helpers({
+  'comments': function () {
+    var puzzleId = JigsawRouter.currentPuzzleId();
+    if (!puzzleId)
+      return null;
+    // priorities are in alphabetical order of uselessness.
+    return Comments.find({puzzleId: puzzleId},
+                         {sort: {priority: 1, created: -1}});
+  },
+  maybeSelected: function (commentId) {
+    var comment = Comments.findOne(commentId);
+    if (!comment)
+      return '';
+    return comment.priority === this.toString() ? 'selected' : '';
+  },
+  priorities: function () {
+    return COMMENT_PRIORITIES;
+  },
+  editing: function () {
+    return Session.get('commentEditor.show.' + this._id);
+  },
+  originalText: function () {
+    return Session.get('commentEditor.text.' + this._id);
+  }
+});
 
-Template.comments.maybeSelected = function (commentId) {
-  var comment = Comments.findOne(commentId);
-  if (!comment)
-    return '';
-  return comment.priority === this.toString() ? 'selected' : '';
-};
-
-Template.comments.priorities = function () {
-  return COMMENT_PRIORITIES;
-};
 
 Template.comments.events({
   'click #add-comment-button': function (event, template) {
@@ -192,6 +199,27 @@ Template.comments.events({
     Meteor.call('setPriority', commentId,
                 DomUtils.getElementValue(event.target));
     reactivelyShow(this._id, false);
+  },
+  'click .editComment': function () {
+    Session.set('commentEditor.show.' + this._id, true);
+    // Use the session to set the default textarea text, so it gets preserved.
+    Session.set('commentEditor.text.' + this._id, this.text);
+  },
+  'click .cancelEditComment': function () {
+    Session.set('commentEditor.show.' + this._id, false);
+  },
+  'click .saveEditComment': function (event, template) {
+    var context = this;
+    var textarea = template.find('#edit-comment-text-' + context._id);
+    if (!textarea)
+      return;
+    var text = textarea.value;
+
+    Meteor.call('editComment', context._id, text, function (err, result) {
+      if (err)
+        throw err;
+      Session.set('commentEditor.show.' + context._id, false);
+    });
   }
 });
 

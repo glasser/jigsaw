@@ -134,21 +134,36 @@
 
       <div class="comment comment-priority-{{ priority }}">
         <div class="comment-header">
-          by {{ author }} at {{ huntTime created }}
+          {{#if editing}}
+            <button class='btn cancelEditComment'><i class='icon-ban-circle'></i></button>
+          {{else}}
+            <button class='btn editComment'><i class='icon-pencil'></i></button>
+          {{/if}}
+          by {{ author }}
+          {{#if updated}}
+            at {{ huntTime updated }} (originally at {{huntTime created}})
+          {{else}}
+            at {{ huntTime created }}
+          {{/if}}
           <div class="form-inline">
-            {{#show section=_id useEditButton=true}}
+            {{#show section=_id linkText=priority}}
               <select id="priority-{{_id}}" class="setPriority focus-{{_id}}">
                 {{#each priorities}}
                   <option {{maybeSelected ../../_id}}>{{this}}</option>
                 {{/each}}
               </select>
-            {{else}}
-              [{{ priority }}]
             {{/show}}
           </div>
         </div>
-        <div class="comment-body monospace">{{#linkify}}{{ text }}{{/linkify}}</div>
-        {{! XXX edit comment }}
+        <div class="comment-box"><div class="comment-body monospace">{{#linkify}}{{ text }}{{/linkify}}</div>
+        {{#if editing}}
+          {{#unless equal text originalText}}
+            <p class="text-warning">The comment above has changed since you started editing!</p>
+          {{/unless}}
+          <textarea id="edit-comment-text-{{_id}}" class="input-block-level monospace" rows="10">{{originalText}}</textarea>
+          <button class='btn btn-primary saveEditComment'>Save changes</button>
+        {{/if}}
+          </div>
       </div>
 
   {{/each}}
@@ -156,9 +171,10 @@
     {{#if isNobody}}
       [log in at the top of the page to post a new comment]
     {{else}}
-      Post a new comment (as {{currentUser.username}}):
+      <h4>Post a new comment</h4>
+      <div class="comment-header">by {{currentUser.username}}</div>
       <div class="form">
-        <textarea id="add-comment-text" class="input-block-level monospace" rows="20"></textarea>
+        <textarea id="add-comment-text" class="input-block-level monospace" rows="10"></textarea>
         <input id="add-comment-button" type="submit" class="btn" value="add comment">
       </div>
     {{/if}}

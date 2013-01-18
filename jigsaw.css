@@ -34,20 +34,20 @@ body {
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 
-.comment-priority-important .comment-body {
+.comment-priority-important .comment-box {
   background-color: yellow;
 }
-.comment-priority-normal .comment-body {
+.comment-priority-normal .comment-box {
   background-color: #eedfcc;
 }
-.comment-priority-useless .comment-body {
+.comment-priority-useless .comment-box {
   background-color: grey;
   color: white;
 }
 
 
 .comment {
-  margin: 10px 0;
+  margin: 20px 0;
 }
 
 .comment-header {

@@ -133,8 +133,8 @@ if (Meteor.isServer) {
 Comments = newCollection('comments');
 // schema:
 //    puzzleId
-//    replacedBy (for versioning)  [XXX not yet supported]
 //    created date
+//    updated date (optional)
 //    author
 //    text
 //    priority: important, normal, useless

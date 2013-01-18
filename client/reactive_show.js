@@ -36,11 +36,13 @@ var reactivelyShowing = function (section) {
 
 Template.reactiveShowLink.events({
   'click .reactiveShow': function (event, template) {
+    event.preventDefault();
     reactivelyShow(template.data.section, true);
   }
 });
 Template.reactiveHideLink.events({
   'click .reactiveHide': function (event, template) {
+    event.preventDefault();
     reactivelyShow(template.data.section, false);
   }
 });
