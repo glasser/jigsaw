@@ -6,6 +6,17 @@ Meteor.startup(function () {
   });
 });
 
+var getMetaOrFamilyKey = function (name) {
+  var meta = PuzzleMetadata.findOne({name: name});
+  if (meta) {
+    return 'metadata.' + meta._id;
+  }
+  var family = Families.findOne({name: name});
+  if (family) {
+    return 'families.' + family._id;
+  }
+  return null;
+};
 
 var eachQueryPiece = function (queryUrl, f) {
   var pieces = (queryUrl || '').split('/');
@@ -41,8 +52,9 @@ var eachQueryPiece = function (queryUrl, f) {
     f('tag', 'deleted', true);
 };
 
-var queryUrlToSelector = function (queryUrl) {
+var queryUrlToQuery = function (queryUrl) {
   var selector = {};
+  var sort = [];
   eachQueryPiece(queryUrl, function (command, arg, negate) {
     if (command === 'tag') {
       if (!selector.tags)
@@ -51,6 +63,12 @@ var queryUrlToSelector = function (queryUrl) {
       if (!selector.tags[subSelector])
         selector.tags[subSelector] = [];
       selector.tags[subSelector].push(arg);
+      return;
+    } else if (command === 'sort') {
+      var sortKey = getMetaOrFamilyKey(arg);
+      if (sortKey) {
+        sort.push([sortKey, negate ? 'desc' : 'asc']);
+      }
       return;
     }
     var family = Families.findOne({name: command});
@@ -73,15 +91,25 @@ var queryUrlToSelector = function (queryUrl) {
     }
     // XXX other cases?
   });
-  return selector;
+  var options = {};
+  if (!_.isEmpty(sort))
+    options.sort = sort;
+  return {
+    selector: selector,
+    options: options
+  };
 };
 
 var queryUrlToDescription = function (queryUrl) {
   var description = [];
+  var sort = [];
   eachQueryPiece(queryUrl, function (command, arg, negate) {
     if (command === 'tag') {
       description.push((negate ? 'not ' : '') + arg);
       return;
+    } else if (command === 'sort') {
+      if (getMetaOrFamilyKey(arg))
+        sort.push('by ' + arg + (negate ? ' descending' : ''));
     }
     var family = Families.findOne({name: command});
     if (family) {
@@ -89,7 +117,8 @@ var queryUrlToDescription = function (queryUrl) {
     }
   });
 
-  return _.map(description, function (x) { return '[' + x + ']'; }).join(' ');
+  return _.map(description.concat(sort),
+               function (x) { return '[' + x + ']'; }).join(' ');
 };
 
 Template.searchPage.showing = function () {
@@ -97,7 +126,8 @@ Template.searchPage.showing = function () {
 };
 
 Template.searchPage.search = function () {
-  return Puzzles.find(queryUrlToSelector(JigsawRouter.currentSearchQueryUrl()));
+  var query = queryUrlToQuery(JigsawRouter.currentSearchQueryUrl());
+  return Puzzles.find(query.selector, query.options);
 };
 
 Template.searchPage.searchDescription = function () {
