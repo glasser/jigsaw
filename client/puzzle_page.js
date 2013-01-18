@@ -175,6 +175,9 @@ Template.comments.helpers({
   },
   originalText: function () {
     return Session.get('commentEditor.text.' + this._id);
+  },
+  originalVersion: function () {
+    return Session.get('commentEditor.version.' + this._id);
   }
 });
 
@@ -204,6 +207,7 @@ Template.comments.events({
     Session.set('commentEditor.show.' + this._id, true);
     // Use the session to set the default textarea text, so it gets preserved.
     Session.set('commentEditor.text.' + this._id, this.text);
+    Session.set('commentEditor.version.' + this._id, this.version);
   },
   'click .cancelEditComment': function () {
     Session.set('commentEditor.show.' + this._id, false);
@@ -213,16 +217,75 @@ Template.comments.events({
     var textarea = template.find('#edit-comment-text-' + context._id);
     if (!textarea)
       return;
-    var text = textarea.value;
+    var text = normalizeCommentText(textarea.value);
+    if (text === null)
+      return;
 
-    Meteor.call('editComment', context._id, text, function (err, result) {
+    if (text === context.text) {
+      Session.set('commentEditor.show.' + context._id, false);
+      return;
+    }
+
+    // Send in the "theirs" version, even if it's not what our text is based on.
+    Meteor.call('editComment', context._id, context.version, text, function (err, result) {
       if (err)
         throw err;
-      Session.set('commentEditor.show.' + context._id, false);
+      if (result)
+        Session.set('commentEditor.show.' + context._id, false);
     });
+  },
+  'click .mergeComment': function (event, template) {
+    event.preventDefault();
+    var textarea = template.find('#edit-comment-text-' + this._id);
+    if (!textarea)
+      return;
+    var baseText = Session.get('commentEditor.text.' + this._id);
+    if (!baseText)
+      return;
+    var yourText = normalizeCommentText(textarea.value);
+    if (yourText === null)
+      return;
+    var theirText = this.text;
+    if (!theirText)
+      return;
+    var merged = merge3(theirText, baseText, yourText);
+    if (merged === null)
+      return;
+
+    // Yay, we merged it. Update both the "base" and "yours" to the merged
+    // version, and consider ourselves to be based on the current version (so
+    // the merge prompt goes away).
+    textarea.value = merged;
+    Session.set('commentEditor.text.' + this._id, merged);
+    Session.set('commentEditor.version.' + this._id, this.version);
   }
 });
 
+var merge3 = function (theirText, baseText, yourText) {
+  var theirLines = theirText.split('\n');
+  var baseLines = baseText.split('\n');
+  var yourLines = yourText.split('\n');
+  // inspired by demo_diff3_dig_in
+  var lines = [];
+  _.each(Diff.diff3_merge(theirLines, baseLines, yourLines, false), function (item) {
+    if (item.ok) {
+      Array.prototype.push.apply(lines, item.ok);
+    } else {
+      _.each(Diff.diff_comm(item.conflict.a, item.conflict.b), function (inner) {
+        if (inner.common) {
+          Array.prototype.push.apply(lines, inner.common);
+        } else {
+          lines.push("<<<<<<<<<");
+          Array.prototype.push.apply(lines, inner.file1);
+          lines.push("=========");
+          Array.prototype.push.apply(lines, inner.file2);
+          lines.push(">>>>>>>>>");
+        }
+      });
+    }
+  });
+  return normalizeCommentText(lines.join('\n'));
+};
 
 
 // UPLOADS

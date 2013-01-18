@@ -157,10 +157,12 @@
         </div>
         <div class="comment-box"><div class="comment-body monospace">{{#linkify}}{{ text }}{{/linkify}}</div>
         {{#if editing}}
-          {{#unless equal text originalText}}
-            <p class="text-warning">The comment above has changed since you started editing!</p>
-          {{/unless}}
           <textarea id="edit-comment-text-{{_id}}" class="input-block-level monospace" rows="10">{{originalText}}</textarea>
+          {{#unless equal version originalVersion}}
+            <p class="text-warning">The comment above has changed (and been
+              updated above) since you started editing!</p>
+            <button class='btn btn-warning mergeComment'>Merge changes</button>
+          {{/unless}}
           <button class='btn btn-primary saveEditComment'>Save changes</button>
         {{/if}}
           </div>

@@ -137,6 +137,7 @@ Comments = newCollection('comments');
 //    updated date (optional)
 //    author
 //    text
+//    version
 //    priority: important, normal, useless
 var COMMENT_PRIORITIES = ['important', 'normal', 'useless'];
 if (Meteor.isServer) {
@@ -153,14 +154,21 @@ if (Meteor.isServer) {
   });
 }
 
+var normalizeCommentText = function (text) {
+  if (!(/\S/.test(text)))
+    return null;
+  if (text.substr(text.length - 1) !== '\n')
+    return text + '\n';
+  return text;
+};
+
 // Comments can only be created via this function. Note that this will fail if
 // called on the client outside of a stub. Returns true if a comment was
 // created.
 var createComment = function (puzzleId, text) {
-  if (!(/\S/.test(text)))
+  text = normalizeCommentText(text);
+  if (text === null)
     return false;
-  if (text.substr(text.length - 1) !== '\n')
-    text = text + '\n';
   var author = Meteor.user().username;
   if (!author)
     return false;
@@ -170,6 +178,7 @@ var createComment = function (puzzleId, text) {
                    created: +(new Date),
                    author: author,
                    text: text,
+                   version: 1,
                    priority: 'normal'});
   return true;
 };
