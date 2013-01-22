@@ -1,0 +1,17 @@
+{
+  // SEE server/spreadsheet.js for an explanation of this.
+  "googleApi": {
+    "clientId": "XXX.apps.googleusercontent.com",
+    "clientSecret": "YYY",
+    "refreshToken": "ZZZ"
+  },
+  "publicConfig": {
+    // SEE filepicker-setup for an explanation of the next two
+    "filepickerKey": "WWW",
+    "s3bucket": "net.davidglasser.robopop.filepicker",
+    // This is just the site title
+    "siteTitle": "RoboPop"
+  },
+  // this is just the site password
+  "globalPassword": "deltacity"
+}

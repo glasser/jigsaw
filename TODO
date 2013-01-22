@@ -1,0 +1,21 @@
+Things that 'hq' had that weren't done in Jigsaw for 2013:
+
+- related queries on puzzle pages (ie, metas)
+- custom css to make puzzle search pages more pretty
+
+That said, some rethinking for next year:
+
+- Typically, # of spreadsheets == 1.  It's not a problem to create them and
+  leave unused, and they can have multiple sheets. Should change to just give
+  every puzzle one SS, and optimize the display around a iframe pseudo-embedded
+  sheet with a little bit of puzzle on top.
+
+- Hard-code a little more of the metadata. eg, we can assume that there is
+  something called a "round", but just that puzzles can have multiple
+  rounds. eg, a left sidebar showing all unsolved puzzles, sorted by round,
+  would do much of what we currently get from searches.  it would also be OK if
+  we hardcoded the existence of 'status' a little more.  then we could have
+  puzzle pages that are mostly spreadsheets, and round pages that are mostly
+  searches.
+
+
