@@ -53,7 +53,7 @@ if (Meteor.isServer) {
     return logInAsUsername('nobody');
   });
 
-  Meteor.Facts.setUserIdFilter(function (userId) {
+  Facts.setUserIdFilter(function (userId) {
     return !!userId;
   });
 } else {
